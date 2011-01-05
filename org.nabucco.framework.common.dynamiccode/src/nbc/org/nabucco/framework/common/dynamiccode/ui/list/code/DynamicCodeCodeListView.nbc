@@ -1,0 +1,29 @@
+package org.nabucco.framework.common.dynamiccode.ui.list.code;
+
+import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCode;
+
+@Author			Stefanie Feld
+@Company		PRODYNA AG
+@Date			2010-03-16
+@Description	ListView for DynamicCodeCode
+@Id				org.nabucco.framework.common.dynamiccode.ui.list.code.DynamicCodeCodeListView
+public ListView DynamicCodeCodeListView {
+
+	private Datatype DynamicCodeCode[1] code;
+
+	@MappedField 			code.owner
+	@ColumnLabelId			dynamiccode.owner 
+	@ColumnLabelDefault 	"Code Owner"
+	private Column dynamicCodeCodeOwner;
+
+	@MappedField 			code.name
+	@ColumnLabelId			dynamiccode.name 
+	@ColumnLabelDefault 	"DynamicCode Code"
+	private Column dynamicCodeCodeName;
+	
+	@MappedField 			code.description
+	@ColumnLabelId			dynamiccode.description 
+	@ColumnLabelDefault 	"Code Description"
+	private Column dynamicCodeCodeDescription;
+	
+}

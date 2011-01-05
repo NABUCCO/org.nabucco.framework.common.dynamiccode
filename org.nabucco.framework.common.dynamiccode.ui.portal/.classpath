@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="out/ide/main/gen" path="src/main/gen"/>
+	<classpathentry kind="src" output="out/ide/main/man" path="src/main/man"/>
+	<classpathentry kind="src" output="out/ide/test/gen" path="src/test/gen"/>
+	<classpathentry kind="src" output="out/ide/test/man" path="src/test/man"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.component"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.datatype"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.exception"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.message"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.service"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/jsf-api.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/jsp-api.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/org.nabucco.framework.base.facade.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/org.nabucco.framework.base.ui.portal.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/org.nabucco.framework.base.ui.web.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/servlet-api.jar"/>
+	<classpathentry kind="output" path="out"/>
+</classpath>
