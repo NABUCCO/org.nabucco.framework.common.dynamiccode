@@ -15,5 +15,7 @@
 	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/impl/log4j.jar"/>
 	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/impl/org.nabucco.framework.base.facade.jar"/>
 	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/impl/org.nabucco.framework.base.impl.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/impl/org.nabucco.common.cache.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/impl/org.nabucco.common.extension.jar"/>
 	<classpathentry kind="output" path="out"/>
 </classpath>

@@ -7,6 +7,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.service"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/facade/org.nabucco.framework.base.facade.jar"/>
+	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/facade/org.nabucco.framework.base.facade.jar" sourcepath="/org.nabucco.framework.common.dynamiccode/lib/source/org.nabucco.framework.base.facade.sources.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.datatype"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.exception"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.message"/>
 	<classpathentry kind="output" path="out"/>
 </classpath>

@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,9 @@ public class DynamicCodeCache {
 
     /** Map of Dynamic Codes by their code path. */
     private static final Map<String, SoftReference<Collection<DynamicCodeCode>>> CODE_BY_CODEPATH = new HashMap<String, SoftReference<Collection<DynamicCodeCode>>>();
+
+    /** Map of Dynamic Codes by their CodeGroup path. */
+    private static final Map<String, SoftReference<DynamicCodeCodeGroup>> CODEGROUP_BY_CODEPATH = new HashMap<String, SoftReference<DynamicCodeCodeGroup>>();
 
     /** Map of Dynamic Codes by their ID. */
     private static final Map<Long, SoftReference<DynamicCodeCode>> CODE_BY_ID = new HashMap<Long, SoftReference<DynamicCodeCode>>();
@@ -107,7 +110,32 @@ public class DynamicCodeCache {
         }
 
         synchronized (CODE_BY_CODEPATH) {
-            SoftReference<Collection<DynamicCodeCode>> reference = CODE_BY_CODEPATH.get(path.getValue());
+            SoftReference<Collection<DynamicCodeCode>> reference = CODE_BY_CODEPATH.get(path
+                    .getValue());
+            if (reference != null && reference.get() != null) {
+                return reference.get();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieves the list of cached codes.
+     * 
+     * @param path
+     *            the code path
+     * 
+     * @return the list of codes
+     */
+    public static DynamicCodeCodeGroup retrieveGroupFromCache(CodePath path) {
+        if (path == null || path.getValue() == null) {
+            return null;
+        }
+
+        synchronized (CODEGROUP_BY_CODEPATH) {
+            SoftReference<DynamicCodeCodeGroup> reference = CODEGROUP_BY_CODEPATH.get(path
+                    .getValue());
             if (reference != null && reference.get() != null) {
                 return reference.get();
             }
@@ -164,7 +192,27 @@ public class DynamicCodeCache {
         }
 
         synchronized (CODE_BY_CODEPATH) {
-            CODE_BY_CODEPATH.put(path.getValue(), new SoftReference<Collection<DynamicCodeCode>>(codes));
+            CODE_BY_CODEPATH.put(path.getValue(), new SoftReference<Collection<DynamicCodeCode>>(
+                    codes));
+        }
+    }
+
+    /**
+     * Cache a dynamic codes group by it's code path.
+     * 
+     * @param path
+     *            the path as key
+     * @param codes
+     *            the list of codes
+     */
+    public static void sendToCache(CodePath path, DynamicCodeCodeGroup group) {
+        if (path == null || path.getValue() == null) {
+            return;
+        }
+
+        synchronized (CODEGROUP_BY_CODEPATH) {
+            CODEGROUP_BY_CODEPATH.put(path.getValue(), new SoftReference<DynamicCodeCodeGroup>(
+                    group));
         }
     }
 
@@ -173,8 +221,9 @@ public class DynamicCodeCache {
      */
     public static void clear() {
         CODE_BY_CODEPATH.clear();
+        CODEGROUP_BY_CODEPATH.clear();
         CODE_BY_ID.clear();
         GROUP_BY_ID.clear();
-    }
 
+    }
 }

@@ -6,7 +6,7 @@
 * You may obtain a copy of the License at
 *
 * http://www.opensource.org/licenses/eclipse-1.0.php or
-* http://www.nabucco-source.org/nabucco-license.html
+* http://nabuccosource.org/License.html
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,11 +17,12 @@
 package org.nabucco.framework.common.dynamiccode.facade.service.search;
 
 import org.nabucco.framework.base.facade.exception.service.SearchException;
-import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeListMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeGroupListMsg;
+import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeGroupMsg;
+import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeListMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.search.CodePathSearchMsg;
-import org.nabucco.framework.common.dynamiccode.facade.message.search.DynamicCodeCodeSearchMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.search.DynamicCodeCodeGroupSearchMsg;
+import org.nabucco.framework.common.dynamiccode.facade.message.search.DynamicCodeCodeSearchMsg;
 
 @Author			Frank Ratschinski
 @Company		PRODYNA AG
@@ -41,5 +42,8 @@ public Service SearchDynamicCode {
 	
 	@ManualImplementation
 	public DynamicCodeCodeListMsg searchByCodePath(CodePathSearchMsg msg) throws SearchException;
+	
+	@ManualImplementation
+	public DynamicCodeCodeGroupMsg searchByCodeGroupPath(CodePathSearchMsg msg) throws SearchException;
 	
 }

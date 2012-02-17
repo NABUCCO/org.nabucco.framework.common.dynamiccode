@@ -9,9 +9,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.service"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/test/org.nabucco.framework.base.facade.jar"/>
-	<classpathentry kind="lib" path="lib/test/org.nabucco.framework.base.impl.jar"/>
+	<classpathentry kind="lib" path="lib/test/org.nabucco.framework.base.facade.jar" sourcepath="lib/source/org.nabucco.framework.base.facade.sources.zip"/>
 	<classpathentry kind="lib" path="lib/test/org.nabucco.framework.base.test.jar"/>
+	<classpathentry kind="lib" path="lib/facade/org.nabucco.common.cache.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JBOSS"/>
 	<classpathentry kind="output" path="out/ide"/>
 </classpath>

@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,6 @@ package org.nabucco.framework.common.dynamiccode.impl.service.maintain;
 import org.nabucco.framework.base.facade.datatype.DatatypeState;
 import org.nabucco.framework.base.facade.exception.persistence.PersistenceException;
 import org.nabucco.framework.base.facade.exception.service.MaintainException;
-import org.nabucco.framework.base.impl.service.maintain.PersistenceHelper;
 import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCode;
 import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCodeGroup;
 import org.nabucco.framework.common.dynamiccode.facade.message.maintain.DynamicCodeCodeMaintainMsg;
@@ -30,8 +29,7 @@ import org.nabucco.framework.common.dynamiccode.impl.service.maintain.support.Dy
  * 
  * @author Nicolas Moser, PRODYNA AG
  */
-public class MaintainDynamicCodeCodeServiceHandlerImpl extends
-        MaintainDynamicCodeCodeServiceHandler {
+public class MaintainDynamicCodeCodeServiceHandlerImpl extends MaintainDynamicCodeCodeServiceHandler {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,16 +37,11 @@ public class MaintainDynamicCodeCodeServiceHandlerImpl extends
 
     private DynamicCodeCodeGroup group;
 
-    private PersistenceHelper helper;
-
     @Override
-    public DynamicCodeCodeMaintainMsg maintainDynamicCodeCode(DynamicCodeCodeMaintainMsg msg)
-            throws MaintainException {
+    public DynamicCodeCodeMaintainMsg maintainDynamicCodeCode(DynamicCodeCodeMaintainMsg msg) throws MaintainException {
 
         this.code = msg.getCode();
         this.group = msg.getParentGroup();
-
-        this.helper = new PersistenceHelper(super.getEntityManager());
 
         this.maintain();
 
@@ -84,7 +77,7 @@ public class MaintainDynamicCodeCodeServiceHandlerImpl extends
      * @throws PersistenceException
      */
     private void maintainCode() throws PersistenceException {
-        DynamicCodeMaintainSupport support = new DynamicCodeMaintainSupport(this.helper);
+        DynamicCodeMaintainSupport support = new DynamicCodeMaintainSupport(super.getPersistenceManager());
         this.code = support.maintainDynamicCodeCode(this.code);
     }
 
@@ -96,11 +89,10 @@ public class MaintainDynamicCodeCodeServiceHandlerImpl extends
      */
     private void maintainParentGroup() throws PersistenceException {
         if (this.group.getId() == null) {
-            throw new PersistenceException(
-                    "Cannot modify non-persistent parent DynamicCodeCodeGroup.");
+            throw new PersistenceException("Cannot modify non-persistent parent DynamicCodeCodeGroup.");
         }
 
-        this.group = this.helper.find(DynamicCodeCodeGroup.class, this.group);
+        this.group = super.getPersistenceManager().find(this.group);
         this.group.getCodeList().add(this.code);
     }
 }

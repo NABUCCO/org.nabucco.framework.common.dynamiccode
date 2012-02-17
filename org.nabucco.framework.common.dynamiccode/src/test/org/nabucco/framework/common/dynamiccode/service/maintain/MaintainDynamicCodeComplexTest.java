@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,23 +48,15 @@ public class MaintainDynamicCodeComplexTest extends RuntimeTestSupport {
     @Test
     public void testCodeInGroupInGroup() throws Exception {
 
-        DynamicCodeCodeGroup parent = new DynamicCodeCodeGroup();
-        parent.setName("Parent");
-        parent.setDatatypeState(DatatypeState.INITIALIZED);
-        
-        DynamicCodeCodeGroup child = new DynamicCodeCodeGroup();
-        child.setName("Child");
-        child.setDatatypeState(DatatypeState.INITIALIZED);
+        DynamicCodeCodeGroup parent = DynamicCodeTestUtility.dummyCodeGroup("Parent");
+
+        DynamicCodeCodeGroup child = DynamicCodeTestUtility.dummyCodeGroup("Child");
         parent.getCodeGroupList().add(child);
 
-        DynamicCodeCode codeA = new DynamicCodeCode();
-        codeA.setName("Code A");
-        codeA.setDatatypeState(DatatypeState.INITIALIZED);
+        DynamicCodeCode codeA = DynamicCodeTestUtility.dummyCode("Code A");
         child.getCodeList().add(codeA);
 
-        DynamicCodeCode codeB = new DynamicCodeCode();
-        codeB.setName("Code B");
-        codeB.setDatatypeState(DatatypeState.INITIALIZED);
+        DynamicCodeCode codeB = DynamicCodeTestUtility.dummyCode("Code B");
         child.getCodeList().add(codeB);
 
         DynamicCodeCodeGroupMaintainMsg msg = new DynamicCodeCodeGroupMaintainMsg();
@@ -75,19 +67,19 @@ public class MaintainDynamicCodeComplexTest extends RuntimeTestSupport {
 
         rq.setRequestMessage(msg);
 
-        ServiceResponse<DynamicCodeCodeGroupMaintainMsg> rs = this.component
-                .getMaintainDynamicCode().maintainDynamicCodeCodeGroup(rq);
+        ServiceResponse<DynamicCodeCodeGroupMaintainMsg> rs = this.component.getMaintainDynamicCode()
+                .maintainDynamicCodeCodeGroup(rq);
 
         Assert.assertNotNull(rs);
         Assert.assertNotNull(rs.getResponseMessage());
 
         parent = rs.getResponseMessage().getCodeGroup();
         Assert.assertNotNull(parent);
-        
+
         Assert.assertEquals(1, parent.getCodeGroupList().size());
-        
+
         child = parent.getCodeGroupList().get(0);
-        
+
         Assert.assertNotNull(child);
         Assert.assertNotNull(child.getId());
         Assert.assertEquals(DatatypeState.PERSISTENT, child.getDatatypeState());
@@ -110,15 +102,12 @@ public class MaintainDynamicCodeComplexTest extends RuntimeTestSupport {
 
     @Test
     public void testCodeInGroup() throws Exception {
-        
-        DynamicCodeCodeGroup group = new DynamicCodeCodeGroup();
-        group.setName("Group");
+
+        DynamicCodeCodeGroup group = DynamicCodeTestUtility.dummyCodeGroup("Group");
         group = DynamicCodeTestUtility.createCodeGroup(this.component, group);
         Assert.assertEquals(0, group.getVersion().longValue());
-        
-        DynamicCodeCode code = new DynamicCodeCode();
-        code.setName("Code");
-        code.setDatatypeState(DatatypeState.INITIALIZED);
+
+        DynamicCodeCode code = DynamicCodeTestUtility.dummyCode("Code");
 
         DynamicCodeCodeMaintainMsg msg = new DynamicCodeCodeMaintainMsg();
         msg.setCode(code);
@@ -129,8 +118,8 @@ public class MaintainDynamicCodeComplexTest extends RuntimeTestSupport {
 
         rq.setRequestMessage(msg);
 
-        ServiceResponse<DynamicCodeCodeMaintainMsg> rs = this.component
-                .getMaintainDynamicCode().maintainDynamicCodeCode(rq);
+        ServiceResponse<DynamicCodeCodeMaintainMsg> rs = this.component.getMaintainDynamicCode()
+                .maintainDynamicCodeCode(rq);
 
         Assert.assertNotNull(rs);
         Assert.assertNotNull(rs.getResponseMessage());
@@ -161,17 +150,14 @@ public class MaintainDynamicCodeComplexTest extends RuntimeTestSupport {
 
     @Test
     public void testGroupInGroup() throws Exception {
-        
-        DynamicCodeCodeGroup parent = new DynamicCodeCodeGroup();
-        parent.setName("Parent");
+
+        DynamicCodeCodeGroup parent = DynamicCodeTestUtility.dummyCodeGroup("Parent");
         parent = DynamicCodeTestUtility.createCodeGroup(this.component, parent);
-        
+
         Assert.assertEquals(0, parent.getVersion().longValue());
-        
-        DynamicCodeCodeGroup child = new DynamicCodeCodeGroup();
-        child.setName("Child");
-        child.setDatatypeState(DatatypeState.INITIALIZED);
-        
+
+        DynamicCodeCodeGroup child = DynamicCodeTestUtility.dummyCodeGroup("Child");
+
         DynamicCodeCodeGroupMaintainMsg msg = new DynamicCodeCodeGroupMaintainMsg();
         msg.setCodeGroup(child);
         msg.setParentGroup(parent);
@@ -181,8 +167,8 @@ public class MaintainDynamicCodeComplexTest extends RuntimeTestSupport {
 
         rq.setRequestMessage(msg);
 
-        ServiceResponse<DynamicCodeCodeGroupMaintainMsg> rs = this.component
-                .getMaintainDynamicCode().maintainDynamicCodeCodeGroup(rq);
+        ServiceResponse<DynamicCodeCodeGroupMaintainMsg> rs = this.component.getMaintainDynamicCode()
+                .maintainDynamicCodeCodeGroup(rq);
 
         Assert.assertNotNull(rs);
         Assert.assertNotNull(rs.getResponseMessage());

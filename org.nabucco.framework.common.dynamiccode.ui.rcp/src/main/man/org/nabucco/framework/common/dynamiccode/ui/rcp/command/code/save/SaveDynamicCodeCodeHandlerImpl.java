@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,18 +22,16 @@ import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCodeG
 import org.nabucco.framework.common.dynamiccode.facade.message.maintain.DynamicCodeCodeMaintainMsg;
 import org.nabucco.framework.common.dynamiccode.ui.rcp.edit.code.model.DynamicCodeCodeEditBusinessModel;
 import org.nabucco.framework.common.dynamiccode.ui.rcp.edit.code.model.DynamicCodeCodeEditViewModel;
-import org.nabucco.framework.plugin.base.Activator;
-import org.nabucco.framework.plugin.base.command.NabuccoAbstractSaveCommandHandlerImpl;
+import org.nabucco.framework.plugin.base.command.AbstractSaveCommandHandlerImpl;
 
 /**
  * SaveDynamicCodeCodeHandlerImpl
  * 
  * @author Michael Krausse, PRODYNA AG
  */
-public class SaveDynamicCodeCodeHandlerImpl
-        extends
-        NabuccoAbstractSaveCommandHandlerImpl<DynamicCodeCodeEditBusinessModel, DynamicCodeCodeEditViewModel>
-        implements SaveDynamicCodeCodeHandler {
+public class SaveDynamicCodeCodeHandlerImpl extends
+        AbstractSaveCommandHandlerImpl<DynamicCodeCodeEditBusinessModel, DynamicCodeCodeEditViewModel> implements
+        SaveDynamicCodeCodeHandler {
 
     @Override
     public void saveDynamicCodeCode() {
@@ -46,15 +44,11 @@ public class SaveDynamicCodeCodeHandlerImpl
     }
 
     @Override
-    protected void saveModel(DynamicCodeCodeEditViewModel viewModel,
-            DynamicCodeCodeEditBusinessModel businessModel) {
-        try {
-            DynamicCodeCode code = viewModel.getCode();
-            DynamicCodeCodeGroup parentGroup = viewModel.getGroup();
-            DynamicCodeCodeMaintainMsg result = businessModel.save(code, parentGroup);
-            viewModel.setCode(result.getCode());
-        } catch (ClientException e) {
-            Activator.getDefault().logError(e);
-        }
+    protected void saveModel(DynamicCodeCodeEditViewModel viewModel, DynamicCodeCodeEditBusinessModel businessModel)
+            throws ClientException {
+        DynamicCodeCode code = viewModel.getCode();
+        DynamicCodeCodeGroup parentGroup = viewModel.getGroup();
+        DynamicCodeCodeMaintainMsg result = businessModel.save(code, parentGroup);
+        viewModel.setCode(result.getCode());
     }
 }

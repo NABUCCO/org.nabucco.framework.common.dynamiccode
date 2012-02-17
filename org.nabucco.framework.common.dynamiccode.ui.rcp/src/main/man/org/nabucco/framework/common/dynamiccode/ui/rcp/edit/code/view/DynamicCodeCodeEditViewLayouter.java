@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,35 +45,31 @@ import org.nabucco.framework.plugin.base.view.NabuccoMessageManager;
 /**
  * DynamicCodeCodeEditViewLayouter
  * 
- * @author Michael Krauße, PRODYNA AG
+ * @author Michael Krauï¿½e, PRODYNA AG
  */
-public class DynamicCodeCodeEditViewLayouter implements
-        NabuccoLayouter<DynamicCodeCodeEditViewModel> {
+public class DynamicCodeCodeEditViewLayouter implements NabuccoLayouter<DynamicCodeCodeEditViewModel> {
 
     private DynamicCodeCodeEditViewWidgetFactory widgetFactory;
 
     private NabuccoMessageManager messageManager;
 
     @Override
-    public Composite layout(Composite parent, NabuccoMessageManager messageManager,
-            DynamicCodeCodeEditViewModel model) {
+    public Composite layout(Composite parent, NabuccoMessageManager messageManager, DynamicCodeCodeEditViewModel model) {
 
         this.messageManager = messageManager;
 
-        this.widgetFactory = new DynamicCodeCodeEditViewWidgetFactory(
-                new NabuccoFormToolkit(parent), model);
+        this.widgetFactory = new DynamicCodeCodeEditViewWidgetFactory(new NabuccoFormToolkit(parent), model);
 
         return this.layoutSection(parent, model);
     }
 
     @Override
-    public Composite layout(Composite parent, NabuccoMessageManager messageManager,
-            DynamicCodeCodeEditViewModel model, Layoutable<DynamicCodeCodeEditViewModel> view) {
+    public Composite layout(Composite parent, NabuccoMessageManager messageManager, DynamicCodeCodeEditViewModel model,
+            Layoutable<DynamicCodeCodeEditViewModel> view) {
 
         this.messageManager = messageManager;
 
-        this.widgetFactory = new DynamicCodeCodeEditViewWidgetFactory(
-                new NabuccoFormToolkit(parent), model);
+        this.widgetFactory = new DynamicCodeCodeEditViewWidgetFactory(new NabuccoFormToolkit(parent), model);
 
         return this.layoutSection(parent, model);
     }
@@ -93,13 +89,14 @@ public class DynamicCodeCodeEditViewLayouter implements
         layout.verticalSpacing = 10;
         layout.horizontalSpacing = 20;
 
-        Composite sectionBody = widgetFactory.getNabuccoFormToolKit().createComposite(section,
-                layout);
+        Composite sectionBody = widgetFactory.getNabuccoFormToolKit().createComposite(section, layout);
         section.setClient(sectionBody);
 
         this.layoutLabelAndInputFieldName(sectionBody);
         this.layoutLabelAndInputFieldDescription(sectionBody);
         this.layoutLabelAndInputFieldOwner(sectionBody);
+        this.layoutLabelAndInputFieldTenant(sectionBody);
+        this.layoutLabelAndInputFieldFuntionalId(sectionBody);
         this.layoutCodeGroupPicker(sectionBody, model);
 
         return section;
@@ -151,6 +148,40 @@ public class DynamicCodeCodeEditViewLayouter implements
 
         Text text = widgetFactory.createInputFieldOwner(parent);
         DynamicCodeLayouterUtility.layoutDefault(text);
+        
+        text.setEnabled(false);
+        text.setEditable(false);
+    }
+
+    /**
+     * Layout the code tenant.
+     * 
+     * @param parent
+     *            the parent section
+     */
+    private void layoutLabelAndInputFieldTenant(Composite parent) {
+        Label label = widgetFactory.createLabelTenant(parent);
+        DynamicCodeLayouterUtility.layoutDefault(label);
+
+        Text text = widgetFactory.createInputFieldTenant(parent);
+        DynamicCodeLayouterUtility.layoutDefault(text);
+        
+        text.setEnabled(false);
+        text.setEditable(false);
+    }
+
+    /**
+     * Layout the code functional id.
+     * 
+     * @param parent
+     *            the parent section
+     */
+    private void layoutLabelAndInputFieldFuntionalId(Composite sectionBody) {
+        Label label = widgetFactory.createLabelFunctionalId(sectionBody);
+        DynamicCodeLayouterUtility.layoutDefault(label);
+
+        Text text = widgetFactory.createInputFieldFunctionalId(sectionBody);
+        DynamicCodeLayouterUtility.layoutDefault(text);
     }
 
     /**
@@ -160,9 +191,8 @@ public class DynamicCodeCodeEditViewLayouter implements
      *            the parent composite
      */
     private void layoutCodeGroupPicker(Composite parent, DynamicCodeCodeEditViewModel model) {
-        ElementPickerParameter params = new ElementPickerParameter(
-                new NabuccoDefaultTableSorter<DynamicCodeCodeGroup>(createTableColumnComparators()),
-                new DynamicCodeCodeGroupListViewTableFilter(),
+        ElementPickerParameter params = new ElementPickerParameter(new NabuccoDefaultTableSorter<DynamicCodeCodeGroup>(
+                createTableColumnComparators()), new DynamicCodeCodeGroupListViewTableFilter(),
                 new DynamicCodeCodeGroupLabelProvider(), new CodeGroupPickerContentProvider(model),
                 createTableColumnInfo());
 

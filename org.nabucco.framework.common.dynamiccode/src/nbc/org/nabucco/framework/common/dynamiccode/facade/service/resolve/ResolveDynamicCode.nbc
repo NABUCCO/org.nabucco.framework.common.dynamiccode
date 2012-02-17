@@ -6,7 +6,7 @@
 * You may obtain a copy of the License at
 *
 * http://www.opensource.org/licenses/eclipse-1.0.php or
-* http://www.nabucco-source.org/nabucco-license.html
+* http://nabuccosource.org/License.html
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,10 +17,11 @@
 package org.nabucco.framework.common.dynamiccode.facade.service.resolve;
 
 import org.nabucco.framework.base.facade.exception.service.ResolveException;
-import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeResolveRq;
-import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeResolveRs;
+import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeGroupMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeGroupResolveRq;
 import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeGroupResolveRs;
+import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeResolveRq;
+import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeResolveRs;
 
 @Author			Nicolas Moser
 @Company		PRODYNA AG
@@ -39,5 +40,7 @@ public Service ResolveDynamicCode {
 	@ManualImplementation
 	public DynamicCodeCodeGroupResolveRs resolveDynamicCodeCodeGroup(DynamicCodeCodeGroupResolveRq rqMsg)
 			throws ResolveException;		
-			
+	
+	@ManualImplementation
+	public DynamicCodeCodeGroupMsg resolveAll() throws ResolveException;
 }

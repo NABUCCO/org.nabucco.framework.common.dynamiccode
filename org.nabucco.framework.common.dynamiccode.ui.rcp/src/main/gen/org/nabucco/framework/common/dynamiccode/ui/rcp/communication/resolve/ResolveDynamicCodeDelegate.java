@@ -1,19 +1,34 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.ui.rcp.communication.resolve;
 
+import org.nabucco.framework.base.facade.datatype.NabuccoSystem;
+import org.nabucco.framework.base.facade.datatype.context.ServiceSubContext;
 import org.nabucco.framework.base.facade.exception.client.ClientException;
+import org.nabucco.framework.base.facade.message.EmptyServiceMessage;
 import org.nabucco.framework.base.facade.message.ServiceRequest;
 import org.nabucco.framework.base.facade.message.ServiceResponse;
+import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeGroupMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeGroupResolveRq;
 import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeGroupResolveRs;
 import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeResolveRq;
 import org.nabucco.framework.common.dynamiccode.facade.message.resolve.DynamicCodeCodeResolveRs;
 import org.nabucco.framework.common.dynamiccode.facade.service.resolve.ResolveDynamicCode;
-import org.nabucco.framework.plugin.base.Activator;
 import org.nabucco.framework.plugin.base.component.communication.ServiceDelegateSupport;
-import org.nabucco.framework.plugin.base.logging.NabuccoLogMessage;
 
 /**
  * ResolveDynamicCodeDelegate<p/>Resolution Service for DynamicCode<p/>
@@ -38,64 +53,105 @@ public class ResolveDynamicCodeDelegate extends ServiceDelegateSupport {
     /**
      * ResolveDynamicCodeCode.
      *
-     * @param rq the DynamicCodeCodeResolveRq.
+     * @param subContexts the ServiceSubContext....
+     * @param message the DynamicCodeCodeResolveRq.
      * @return the DynamicCodeCodeResolveRs.
      * @throws ClientException
      */
-    public DynamicCodeCodeResolveRs resolveDynamicCodeCode(DynamicCodeCodeResolveRq rq)
-            throws ClientException {
+    public DynamicCodeCodeResolveRs resolveDynamicCodeCode(DynamicCodeCodeResolveRq message,
+            ServiceSubContext... subContexts) throws ClientException {
         ServiceRequest<DynamicCodeCodeResolveRq> request = new ServiceRequest<DynamicCodeCodeResolveRq>(
-                super.createServiceContext());
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeResolveRs> rs;
+                super.createServiceContext(subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeResolveRs> response = null;
+        Exception exception = null;
         if ((service != null)) {
-            long start = System.currentTimeMillis();
+            super.handleRequest(request);
+            long start = NabuccoSystem.getCurrentTimeMillis();
             try {
-                rs = service.resolveDynamicCodeCode(request);
-                return rs.getResponseMessage();
-            } catch (Exception exception) {
-                super.processException(exception);
+                response = service.resolveDynamicCodeCode(request);
+            } catch (Exception e) {
+                exception = e;
             } finally {
-                long end = System.currentTimeMillis();
-                Activator.getDefault().logDebug(
-                        new NabuccoLogMessage(ResolveDynamicCodeDelegate.class, "Service: ",
-                                "ResolveDynamicCode.resolveDynamicCodeCode", " Time: ", String
-                                        .valueOf((end - start)), "ms."));
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(ResolveDynamicCode.class, "resolveDynamicCodeCode", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response);
+                return response.getResponseMessage();
             }
         }
-        throw new ClientException(
-                "Cannot execute service operation: ResolveDynamicCode.resolveDynamicCodeCode");
+        throw new ClientException("Cannot execute service operation: ResolveDynamicCode.resolveDynamicCodeCode");
     }
 
     /**
      * ResolveDynamicCodeCodeGroup.
      *
-     * @param rq the DynamicCodeCodeGroupResolveRq.
+     * @param subContexts the ServiceSubContext....
+     * @param message the DynamicCodeCodeGroupResolveRq.
      * @return the DynamicCodeCodeGroupResolveRs.
      * @throws ClientException
      */
-    public DynamicCodeCodeGroupResolveRs resolveDynamicCodeCodeGroup(
-            DynamicCodeCodeGroupResolveRq rq) throws ClientException {
+    public DynamicCodeCodeGroupResolveRs resolveDynamicCodeCodeGroup(DynamicCodeCodeGroupResolveRq message,
+            ServiceSubContext... subContexts) throws ClientException {
         ServiceRequest<DynamicCodeCodeGroupResolveRq> request = new ServiceRequest<DynamicCodeCodeGroupResolveRq>(
-                super.createServiceContext());
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeGroupResolveRs> rs;
+                super.createServiceContext(subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeGroupResolveRs> response = null;
+        Exception exception = null;
         if ((service != null)) {
-            long start = System.currentTimeMillis();
+            super.handleRequest(request);
+            long start = NabuccoSystem.getCurrentTimeMillis();
             try {
-                rs = service.resolveDynamicCodeCodeGroup(request);
-                return rs.getResponseMessage();
-            } catch (Exception exception) {
-                super.processException(exception);
+                response = service.resolveDynamicCodeCodeGroup(request);
+            } catch (Exception e) {
+                exception = e;
             } finally {
-                long end = System.currentTimeMillis();
-                Activator.getDefault().logDebug(
-                        new NabuccoLogMessage(ResolveDynamicCodeDelegate.class, "Service: ",
-                                "ResolveDynamicCode.resolveDynamicCodeCodeGroup", " Time: ", String
-                                        .valueOf((end - start)), "ms."));
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(ResolveDynamicCode.class, "resolveDynamicCodeCodeGroup", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response);
+                return response.getResponseMessage();
             }
         }
-        throw new ClientException(
-                "Cannot execute service operation: ResolveDynamicCode.resolveDynamicCodeCodeGroup");
+        throw new ClientException("Cannot execute service operation: ResolveDynamicCode.resolveDynamicCodeCodeGroup");
+    }
+
+    /**
+     * ResolveAll.
+     *
+     * @param subContexts the ServiceSubContext....
+     * @param message the EmptyServiceMessage.
+     * @return the DynamicCodeCodeGroupMsg.
+     * @throws ClientException
+     */
+    public DynamicCodeCodeGroupMsg resolveAll(EmptyServiceMessage message, ServiceSubContext... subContexts)
+            throws ClientException {
+        ServiceRequest<EmptyServiceMessage> request = new ServiceRequest<EmptyServiceMessage>(
+                super.createServiceContext(subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeGroupMsg> response = null;
+        Exception exception = null;
+        if ((service != null)) {
+            super.handleRequest(request);
+            long start = NabuccoSystem.getCurrentTimeMillis();
+            try {
+                response = service.resolveAll(request);
+            } catch (Exception e) {
+                exception = e;
+            } finally {
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(ResolveDynamicCode.class, "resolveAll", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response);
+                return response.getResponseMessage();
+            }
+        }
+        throw new ClientException("Cannot execute service operation: ResolveDynamicCode.resolveAll");
     }
 }

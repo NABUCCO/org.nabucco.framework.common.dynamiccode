@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,8 +30,7 @@ import org.nabucco.framework.plugin.base.model.BusinessModel;
  * 
  * @author Nicolas Moser, PRODYNA AG
  */
-public class DeleteDynamicCodeCodeHandlerImpl extends
-        AbstractDeleteDatatypeHandler<DynamicCodeCodeEditView> implements
+public class DeleteDynamicCodeCodeHandlerImpl extends AbstractDeleteDatatypeHandler<DynamicCodeCodeEditView> implements
         DeleteDynamicCodeCodeHandler {
 
     @Override
@@ -45,20 +44,15 @@ public class DeleteDynamicCodeCodeHandlerImpl extends
     }
 
     @Override
-    protected boolean preClose(DynamicCodeCodeEditView view) {
+    protected boolean preClose(DynamicCodeCodeEditView view) throws ClientException {
         DynamicCodeCode code = view.getModel().getCode();
         code.setDatatypeState(DatatypeState.DELETED);
 
         BusinessModel businessModel = Activator.getDefault().getModel()
                 .getBusinessModel(DynamicCodeCodeEditBusinessModel.ID);
 
-        try {
-            if (businessModel instanceof DynamicCodeCodeEditBusinessModel) {
-                ((DynamicCodeCodeEditBusinessModel) businessModel).save(code, null);
-            }
-        } catch (ClientException e) {
-            Activator.getDefault().logError(e);
-            return true;
+        if (businessModel instanceof DynamicCodeCodeEditBusinessModel) {
+            ((DynamicCodeCodeEditBusinessModel) businessModel).save(code, null);
         }
 
         return super.preClose(view);

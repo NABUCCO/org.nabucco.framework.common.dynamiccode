@@ -1,14 +1,30 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.ui.web.communication.search;
 
-import org.nabucco.framework.base.facade.datatype.security.Subject;
+import org.nabucco.framework.base.facade.datatype.NabuccoSystem;
+import org.nabucco.framework.base.facade.datatype.context.ServiceSubContext;
+import org.nabucco.framework.base.facade.datatype.session.NabuccoSession;
 import org.nabucco.framework.base.facade.exception.service.SearchException;
 import org.nabucco.framework.base.facade.message.ServiceRequest;
 import org.nabucco.framework.base.facade.message.ServiceResponse;
 import org.nabucco.framework.base.ui.web.communication.ServiceDelegateSupport;
 import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeGroupListMsg;
+import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeGroupMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeListMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.search.CodePathSearchMsg;
 import org.nabucco.framework.common.dynamiccode.facade.message.search.DynamicCodeCodeGroupSearchMsg;
@@ -38,134 +54,144 @@ public class SearchDynamicCodeDelegate extends ServiceDelegateSupport {
     /**
      * SearchDynamicCodeCode.
      *
-     * @param rq the DynamicCodeCodeSearchMsg.
+     * @param subContexts the ServiceSubContext....
+     * @param session the NabuccoSession.
+     * @param message the DynamicCodeCodeSearchMsg.
      * @return the DynamicCodeCodeListMsg.
      * @throws SearchException
      */
-    public DynamicCodeCodeListMsg searchDynamicCodeCode(DynamicCodeCodeSearchMsg rq)
-            throws SearchException {
+    public DynamicCodeCodeListMsg searchDynamicCodeCode(DynamicCodeCodeSearchMsg message, NabuccoSession session,
+            ServiceSubContext... subContexts) throws SearchException {
         ServiceRequest<DynamicCodeCodeSearchMsg> request = new ServiceRequest<DynamicCodeCodeSearchMsg>(
-                super.createServiceContext());
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeListMsg> rs;
-        if ((service != null)) {
-            rs = service.searchDynamicCodeCode(request);
-        } else {
-            throw new SearchException(
-                    "Cannot execute service operation: SearchDynamicCode.searchDynamicCodeCode");
+                super.createServiceContext(session, subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeListMsg> response = null;
+        Exception exception = null;
+        if ((this.service != null)) {
+            super.handleRequest(request, session);
+            long start = NabuccoSystem.getCurrentTimeMillis();
+            try {
+                response = service.searchDynamicCodeCode(request);
+            } catch (Exception e) {
+                exception = e;
+            } finally {
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(SearchDynamicCode.class, "searchDynamicCodeCode", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response, session);
+                return response.getResponseMessage();
+            }
         }
-        return rs.getResponseMessage();
-    }
-
-    /**
-     * SearchDynamicCodeCode.
-     *
-     * @param subject the Subject.
-     * @param rq the DynamicCodeCodeSearchMsg.
-     * @return the DynamicCodeCodeListMsg.
-     * @throws SearchException
-     */
-    public DynamicCodeCodeListMsg searchDynamicCodeCode(DynamicCodeCodeSearchMsg rq, Subject subject)
-            throws SearchException {
-        ServiceRequest<DynamicCodeCodeSearchMsg> request = new ServiceRequest<DynamicCodeCodeSearchMsg>(
-                super.createServiceContext(subject));
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeListMsg> rs;
-        if ((service != null)) {
-            rs = service.searchDynamicCodeCode(request);
-        } else {
-            throw new SearchException(
-                    "Cannot execute service operation: SearchDynamicCode.searchDynamicCodeCode");
-        }
-        return rs.getResponseMessage();
+        throw new SearchException("Cannot execute service operation: SearchDynamicCode.searchDynamicCodeCode");
     }
 
     /**
      * SearchDynamicCodeCodeGroup.
      *
-     * @param rq the DynamicCodeCodeGroupSearchMsg.
+     * @param subContexts the ServiceSubContext....
+     * @param session the NabuccoSession.
+     * @param message the DynamicCodeCodeGroupSearchMsg.
      * @return the DynamicCodeCodeGroupListMsg.
      * @throws SearchException
      */
-    public DynamicCodeCodeGroupListMsg searchDynamicCodeCodeGroup(DynamicCodeCodeGroupSearchMsg rq)
-            throws SearchException {
+    public DynamicCodeCodeGroupListMsg searchDynamicCodeCodeGroup(DynamicCodeCodeGroupSearchMsg message,
+            NabuccoSession session, ServiceSubContext... subContexts) throws SearchException {
         ServiceRequest<DynamicCodeCodeGroupSearchMsg> request = new ServiceRequest<DynamicCodeCodeGroupSearchMsg>(
-                super.createServiceContext());
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeGroupListMsg> rs;
-        if ((service != null)) {
-            rs = service.searchDynamicCodeCodeGroup(request);
-        } else {
-            throw new SearchException(
-                    "Cannot execute service operation: SearchDynamicCode.searchDynamicCodeCodeGroup");
+                super.createServiceContext(session, subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeGroupListMsg> response = null;
+        Exception exception = null;
+        if ((this.service != null)) {
+            super.handleRequest(request, session);
+            long start = NabuccoSystem.getCurrentTimeMillis();
+            try {
+                response = service.searchDynamicCodeCodeGroup(request);
+            } catch (Exception e) {
+                exception = e;
+            } finally {
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(SearchDynamicCode.class, "searchDynamicCodeCodeGroup", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response, session);
+                return response.getResponseMessage();
+            }
         }
-        return rs.getResponseMessage();
-    }
-
-    /**
-     * SearchDynamicCodeCodeGroup.
-     *
-     * @param subject the Subject.
-     * @param rq the DynamicCodeCodeGroupSearchMsg.
-     * @return the DynamicCodeCodeGroupListMsg.
-     * @throws SearchException
-     */
-    public DynamicCodeCodeGroupListMsg searchDynamicCodeCodeGroup(DynamicCodeCodeGroupSearchMsg rq,
-            Subject subject) throws SearchException {
-        ServiceRequest<DynamicCodeCodeGroupSearchMsg> request = new ServiceRequest<DynamicCodeCodeGroupSearchMsg>(
-                super.createServiceContext(subject));
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeGroupListMsg> rs;
-        if ((service != null)) {
-            rs = service.searchDynamicCodeCodeGroup(request);
-        } else {
-            throw new SearchException(
-                    "Cannot execute service operation: SearchDynamicCode.searchDynamicCodeCodeGroup");
-        }
-        return rs.getResponseMessage();
+        throw new SearchException("Cannot execute service operation: SearchDynamicCode.searchDynamicCodeCodeGroup");
     }
 
     /**
      * SearchByCodePath.
      *
-     * @param rq the CodePathSearchMsg.
+     * @param subContexts the ServiceSubContext....
+     * @param session the NabuccoSession.
+     * @param message the CodePathSearchMsg.
      * @return the DynamicCodeCodeListMsg.
      * @throws SearchException
      */
-    public DynamicCodeCodeListMsg searchByCodePath(CodePathSearchMsg rq) throws SearchException {
-        ServiceRequest<CodePathSearchMsg> request = new ServiceRequest<CodePathSearchMsg>(
-                super.createServiceContext());
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeListMsg> rs;
-        if ((service != null)) {
-            rs = service.searchByCodePath(request);
-        } else {
-            throw new SearchException(
-                    "Cannot execute service operation: SearchDynamicCode.searchByCodePath");
+    public DynamicCodeCodeListMsg searchByCodePath(CodePathSearchMsg message, NabuccoSession session,
+            ServiceSubContext... subContexts) throws SearchException {
+        ServiceRequest<CodePathSearchMsg> request = new ServiceRequest<CodePathSearchMsg>(super.createServiceContext(
+                session, subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeListMsg> response = null;
+        Exception exception = null;
+        if ((this.service != null)) {
+            super.handleRequest(request, session);
+            long start = NabuccoSystem.getCurrentTimeMillis();
+            try {
+                response = service.searchByCodePath(request);
+            } catch (Exception e) {
+                exception = e;
+            } finally {
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(SearchDynamicCode.class, "searchByCodePath", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response, session);
+                return response.getResponseMessage();
+            }
         }
-        return rs.getResponseMessage();
+        throw new SearchException("Cannot execute service operation: SearchDynamicCode.searchByCodePath");
     }
 
     /**
-     * SearchByCodePath.
+     * SearchByCodeGroupPath.
      *
-     * @param subject the Subject.
-     * @param rq the CodePathSearchMsg.
-     * @return the DynamicCodeCodeListMsg.
+     * @param subContexts the ServiceSubContext....
+     * @param session the NabuccoSession.
+     * @param message the CodePathSearchMsg.
+     * @return the DynamicCodeCodeGroupMsg.
      * @throws SearchException
      */
-    public DynamicCodeCodeListMsg searchByCodePath(CodePathSearchMsg rq, Subject subject)
-            throws SearchException {
-        ServiceRequest<CodePathSearchMsg> request = new ServiceRequest<CodePathSearchMsg>(
-                super.createServiceContext(subject));
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeListMsg> rs;
-        if ((service != null)) {
-            rs = service.searchByCodePath(request);
-        } else {
-            throw new SearchException(
-                    "Cannot execute service operation: SearchDynamicCode.searchByCodePath");
+    public DynamicCodeCodeGroupMsg searchByCodeGroupPath(CodePathSearchMsg message, NabuccoSession session,
+            ServiceSubContext... subContexts) throws SearchException {
+        ServiceRequest<CodePathSearchMsg> request = new ServiceRequest<CodePathSearchMsg>(super.createServiceContext(
+                session, subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeGroupMsg> response = null;
+        Exception exception = null;
+        if ((this.service != null)) {
+            super.handleRequest(request, session);
+            long start = NabuccoSystem.getCurrentTimeMillis();
+            try {
+                response = service.searchByCodeGroupPath(request);
+            } catch (Exception e) {
+                exception = e;
+            } finally {
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(SearchDynamicCode.class, "searchByCodeGroupPath", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response, session);
+                return response.getResponseMessage();
+            }
         }
-        return rs.getResponseMessage();
+        throw new SearchException("Cannot execute service operation: SearchDynamicCode.searchByCodeGroupPath");
     }
 }

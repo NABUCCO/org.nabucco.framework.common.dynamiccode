@@ -11,7 +11,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.exception"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.message"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.nabucco.framework.common.dynamiccode.facade.service"/>
-	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/jsf-api.jar"/>
 	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/jsp-api.jar"/>
 	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/org.nabucco.framework.base.facade.jar"/>
 	<classpathentry kind="lib" path="/org.nabucco.framework.common.dynamiccode/lib/portal/org.nabucco.framework.base.ui.portal.jar"/>

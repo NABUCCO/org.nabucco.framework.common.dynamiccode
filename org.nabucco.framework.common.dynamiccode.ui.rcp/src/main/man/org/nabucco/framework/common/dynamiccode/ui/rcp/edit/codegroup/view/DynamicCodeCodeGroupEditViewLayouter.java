@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,8 +46,7 @@ import org.nabucco.framework.plugin.base.view.NabuccoMessageManager;
  * 
  * @author Michael Krausse, PRODYNA AG
  */
-public class DynamicCodeCodeGroupEditViewLayouter implements
-        NabuccoLayouter<DynamicCodeCodeGroupEditViewModel> {
+public class DynamicCodeCodeGroupEditViewLayouter implements NabuccoLayouter<DynamicCodeCodeGroupEditViewModel> {
 
     private DynamicCodeCodeGroupEditViewWidgetFactory widgetFactory;
 
@@ -59,21 +58,18 @@ public class DynamicCodeCodeGroupEditViewLayouter implements
 
         this.messageManager = messageManager;
 
-        this.widgetFactory = new DynamicCodeCodeGroupEditViewWidgetFactory(new NabuccoFormToolkit(
-                parent), model);
+        this.widgetFactory = new DynamicCodeCodeGroupEditViewWidgetFactory(new NabuccoFormToolkit(parent), model);
 
         return this.layoutSection(parent, model);
     }
 
     @Override
     public Composite layout(Composite parent, NabuccoMessageManager messageManager,
-            DynamicCodeCodeGroupEditViewModel model,
-            Layoutable<DynamicCodeCodeGroupEditViewModel> view) {
+            DynamicCodeCodeGroupEditViewModel model, Layoutable<DynamicCodeCodeGroupEditViewModel> view) {
 
         this.messageManager = messageManager;
 
-        this.widgetFactory = new DynamicCodeCodeGroupEditViewWidgetFactory(new NabuccoFormToolkit(
-                parent), model);
+        this.widgetFactory = new DynamicCodeCodeGroupEditViewWidgetFactory(new NabuccoFormToolkit(parent), model);
 
         return layoutSection(parent, model);
     }
@@ -93,14 +89,14 @@ public class DynamicCodeCodeGroupEditViewLayouter implements
         layout.verticalSpacing = 10;
         layout.horizontalSpacing = 20;
 
-        Composite sectionBody = widgetFactory.getNabuccoFormToolKit().createComposite(section,
-                layout);
+        Composite sectionBody = widgetFactory.getNabuccoFormToolKit().createComposite(section, layout);
 
         section.setClient(sectionBody);
 
         layoutLabelAndInputFieldName(sectionBody);
         layoutLabelAndInputFieldDescription(sectionBody);
         layoutLabelAndInputFieldOwner(sectionBody);
+        layoutLabelAndInputFieldTenant(sectionBody);
         layoutCodeGroupElementPicker(sectionBody, model);
 
         return sectionBody;
@@ -152,6 +148,26 @@ public class DynamicCodeCodeGroupEditViewLayouter implements
 
         Text text = widgetFactory.createInputFieldOwner(parent);
         DynamicCodeLayouterUtility.layoutDefault(text);
+
+        text.setEnabled(false);
+        text.setEditable(false);
+    }
+
+    /**
+     * Layout the codegroup tenant.
+     * 
+     * @param parent
+     *            the parent section
+     */
+    private void layoutLabelAndInputFieldTenant(Composite parent) {
+        Label label = widgetFactory.createLabelTenant(parent);
+        DynamicCodeLayouterUtility.layoutDefault(label);
+
+        Text text = widgetFactory.createInputFieldTenant(parent);
+        DynamicCodeLayouterUtility.layoutDefault(text);
+
+        text.setEnabled(false);
+        text.setEditable(false);
     }
 
     /**
@@ -160,11 +176,9 @@ public class DynamicCodeCodeGroupEditViewLayouter implements
      * @param parent
      *            the parent composite
      */
-    private void layoutCodeGroupElementPicker(Composite parent,
-            DynamicCodeCodeGroupEditViewModel model) {
-        ElementPickerParameter params = new ElementPickerParameter(
-                new NabuccoDefaultTableSorter<DynamicCodeCodeGroup>(createTableComparator()),
-                new DynamicCodeCodeGroupListViewTableFilter(),
+    private void layoutCodeGroupElementPicker(Composite parent, DynamicCodeCodeGroupEditViewModel model) {
+        ElementPickerParameter params = new ElementPickerParameter(new NabuccoDefaultTableSorter<DynamicCodeCodeGroup>(
+                createTableComparator()), new DynamicCodeCodeGroupListViewTableFilter(),
                 new DynamicCodeCodeGroupLabelProvider(), new CodeGroupPickerContentProvider(model),
                 createTableColumnInfo());
         widgetFactory.createLabelCodeGroupPicker(parent);
@@ -188,9 +202,8 @@ public class DynamicCodeCodeGroupEditViewLayouter implements
      * @return the column information
      */
     private NabuccoTableColumnInfo[] createTableColumnInfo() {
-        NabuccoTableColumnInfo info = new NabuccoTableColumnInfo("Name",
-                "Name of the DynamicCode CodeGroup", 500, SWT.CENTER, SWT.CENTER,
-                new DynamicCodeCodeGroupListViewDynamicCodeCodeGroupNameLabelProvider());
+        NabuccoTableColumnInfo info = new NabuccoTableColumnInfo("Name", "Name of the DynamicCode CodeGroup", 500,
+                SWT.CENTER, SWT.CENTER, new DynamicCodeCodeGroupListViewDynamicCodeCodeGroupNameLabelProvider());
 
         info.setMoveable(false);
         info.setResizable(false);

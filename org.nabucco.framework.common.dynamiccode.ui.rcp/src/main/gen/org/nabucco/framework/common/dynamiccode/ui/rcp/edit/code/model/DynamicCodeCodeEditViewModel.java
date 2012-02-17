@@ -1,5 +1,18 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.ui.rcp.edit.code.model;
 
@@ -7,8 +20,10 @@ import java.io.Serializable;
 import java.util.Map;
 import org.nabucco.framework.base.facade.datatype.DatatypeState;
 import org.nabucco.framework.base.facade.datatype.Description;
+import org.nabucco.framework.base.facade.datatype.FunctionalIdentifier;
 import org.nabucco.framework.base.facade.datatype.Name;
 import org.nabucco.framework.base.facade.datatype.Owner;
+import org.nabucco.framework.base.facade.datatype.Tenant;
 import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCode;
 import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCodeGroup;
 import org.nabucco.framework.plugin.base.component.edit.model.EditViewModel;
@@ -29,7 +44,11 @@ public class DynamicCodeCodeEditViewModel extends EditViewModel implements Logga
 
     public static final String PROPERTY_CODE_DESCRIPTION = "codeDescription";
 
+    public static final String PROPERTY_CODE_TENANT = "codeTenant";
+
     public static final String PROPERTY_CODE_OWNER = "codeOwner";
+
+    public static final String PROPERTY_CODE_FUNCTIONALID = "codeFunctionalId";
 
     public static final String PROPERTY_GROUP_NAME = "groupName";
 
@@ -56,7 +75,9 @@ public class DynamicCodeCodeEditViewModel extends EditViewModel implements Logga
         Map<String, Serializable> result = super.getValues();
         result.put(PROPERTY_CODE_DESCRIPTION, this.getCodeDescription());
         result.put(PROPERTY_GROUP_NAME, this.getGroupName());
+        result.put(PROPERTY_CODE_FUNCTIONALID, this.getCodeFunctionalId());
         result.put(PROPERTY_CODE_OWNER, this.getCodeOwner());
+        result.put(PROPERTY_CODE_TENANT, this.getCodeTenant());
         result.put(PROPERTY_CODE_NAME, this.getCodeName());
         return result;
     }
@@ -69,13 +90,16 @@ public class DynamicCodeCodeEditViewModel extends EditViewModel implements Logga
     public void setCode(DynamicCodeCode newValue) {
         DynamicCodeCode oldValue = this.code;
         this.code = newValue;
-        this.updateProperty(PROPERTY_CODE_DESCRIPTION,
-                ((oldValue != null) ? oldValue.getDescription() : ""),
+        this.updateProperty(PROPERTY_CODE_TENANT, ((oldValue != null) ? oldValue.getTenant() : ""),
+                ((newValue != null) ? newValue.getTenant() : ""));
+        this.updateProperty(PROPERTY_CODE_DESCRIPTION, ((oldValue != null) ? oldValue.getDescription() : ""),
                 ((newValue != null) ? newValue.getDescription() : ""));
         this.updateProperty(PROPERTY_CODE_NAME, ((oldValue != null) ? oldValue.getName() : ""),
                 ((newValue != null) ? newValue.getName() : ""));
         this.updateProperty(PROPERTY_CODE_OWNER, ((oldValue != null) ? oldValue.getOwner() : ""),
                 ((newValue != null) ? newValue.getOwner() : ""));
+        this.updateProperty(PROPERTY_CODE_FUNCTIONALID, ((oldValue != null) ? oldValue.getFunctionalId() : ""),
+                ((newValue != null) ? newValue.getFunctionalId() : ""));
     }
 
     /**
@@ -151,8 +175,7 @@ public class DynamicCodeCodeEditViewModel extends EditViewModel implements Logga
         String oldVal = code.getDescription().getValue();
         code.getDescription().setValue(newDescription);
         this.updateProperty(PROPERTY_CODE_DESCRIPTION, oldVal, newDescription);
-        if (((!oldVal.equals(newDescription)) && code.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newDescription)) && code.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             code.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -163,11 +186,40 @@ public class DynamicCodeCodeEditViewModel extends EditViewModel implements Logga
      * @return the String.
      */
     public String getCodeDescription() {
-        if ((((code == null) || (code.getDescription() == null)) || (code.getDescription()
-                .getValue() == null))) {
+        if ((((code == null) || (code.getDescription() == null)) || (code.getDescription().getValue() == null))) {
             return "";
         }
         return code.getDescription().getValue();
+    }
+
+    /**
+     * Setter for the CodeTenant.
+     *
+     * @param newTenant the String.
+     */
+    public void setCodeTenant(String newTenant) {
+        if (((code != null) && (code.getTenant() == null))) {
+            Tenant tenant = new Tenant();
+            code.setTenant(tenant);
+        }
+        String oldVal = code.getTenant().getValue();
+        code.getTenant().setValue(newTenant);
+        this.updateProperty(PROPERTY_CODE_TENANT, oldVal, newTenant);
+        if (((!oldVal.equals(newTenant)) && code.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
+            code.setDatatypeState(DatatypeState.MODIFIED);
+        }
+    }
+
+    /**
+     * Getter for the CodeTenant.
+     *
+     * @return the String.
+     */
+    public String getCodeTenant() {
+        if ((((code == null) || (code.getTenant() == null)) || (code.getTenant().getValue() == null))) {
+            return "";
+        }
+        return code.getTenant().getValue();
     }
 
     /**
@@ -198,6 +250,36 @@ public class DynamicCodeCodeEditViewModel extends EditViewModel implements Logga
             return "";
         }
         return code.getOwner().getValue();
+    }
+
+    /**
+     * Setter for the CodeFunctionalId.
+     *
+     * @param newFunctionalId the String.
+     */
+    public void setCodeFunctionalId(String newFunctionalId) {
+        if (((code != null) && (code.getFunctionalId() == null))) {
+            FunctionalIdentifier functionalId = new FunctionalIdentifier();
+            code.setFunctionalId(functionalId);
+        }
+        String oldVal = code.getFunctionalId().getValue();
+        code.getFunctionalId().setValue(newFunctionalId);
+        this.updateProperty(PROPERTY_CODE_FUNCTIONALID, oldVal, newFunctionalId);
+        if (((!oldVal.equals(newFunctionalId)) && code.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
+            code.setDatatypeState(DatatypeState.MODIFIED);
+        }
+    }
+
+    /**
+     * Getter for the CodeFunctionalId.
+     *
+     * @return the String.
+     */
+    public String getCodeFunctionalId() {
+        if ((((code == null) || (code.getFunctionalId() == null)) || (code.getFunctionalId().getValue() == null))) {
+            return "";
+        }
+        return code.getFunctionalId().getValue();
     }
 
     /**

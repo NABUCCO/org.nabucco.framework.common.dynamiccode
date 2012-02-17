@@ -1,5 +1,18 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.ui.rcp.search.codegroup.model;
 
@@ -16,9 +29,8 @@ import org.nabucco.framework.plugin.base.component.search.model.NabuccoComponent
  *
  * @author Silas Schwarz, PRODYNA AG, 2010-03-05
  */
-public class DynamicCodeCodeGroupSearchViewModel extends
-        NabuccoComponentSearchViewModel<DynamicCodeCodeGroup> implements
-        NabuccoComponentSearchParameter {
+public class DynamicCodeCodeGroupSearchViewModel extends NabuccoComponentSearchViewModel<DynamicCodeCodeGroup>
+        implements NabuccoComponentSearchParameter {
 
     public static final String ID = "org.nabucco.framework.common.dynamiccode.ui.search.codegroup.DynamicCodeCodeGroupSearchViewModel";
 
@@ -75,8 +87,7 @@ public class DynamicCodeCodeGroupSearchViewModel extends
         String oldVal = codeGroup.getName().getValue();
         codeGroup.getName().setValue(newName);
         this.updateProperty(PROPERTY_CODEGROUP_NAME, oldVal, newName);
-        if (((!oldVal.equals(newName)) && codeGroup.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newName)) && codeGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             codeGroup.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -87,8 +98,7 @@ public class DynamicCodeCodeGroupSearchViewModel extends
      * @return the String.
      */
     public String getCodeGroupName() {
-        if ((((codeGroup == null) || (codeGroup.getName() == null)) || (codeGroup.getName()
-                .getValue() == null))) {
+        if ((((codeGroup == null) || (codeGroup.getName() == null)) || (codeGroup.getName().getValue() == null))) {
             return "";
         }
         return codeGroup.getName().getValue();
@@ -107,8 +117,7 @@ public class DynamicCodeCodeGroupSearchViewModel extends
         String oldVal = codeGroup.getDescription().getValue();
         codeGroup.getDescription().setValue(newDescription);
         this.updateProperty(PROPERTY_CODEGROUP_DESCRIPTION, oldVal, newDescription);
-        if (((!oldVal.equals(newDescription)) && codeGroup.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newDescription)) && codeGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             codeGroup.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -119,8 +128,7 @@ public class DynamicCodeCodeGroupSearchViewModel extends
      * @return the String.
      */
     public String getCodeGroupDescription() {
-        if ((((codeGroup == null) || (codeGroup.getDescription() == null)) || (codeGroup
-                .getDescription().getValue() == null))) {
+        if ((((codeGroup == null) || (codeGroup.getDescription() == null)) || (codeGroup.getDescription().getValue() == null))) {
             return "";
         }
         return codeGroup.getDescription().getValue();
@@ -139,8 +147,7 @@ public class DynamicCodeCodeGroupSearchViewModel extends
         String oldVal = codeGroup.getOwner().getValue();
         codeGroup.getOwner().setValue(newOwner);
         this.updateProperty(PROPERTY_CODEGROUP_OWNER, oldVal, newOwner);
-        if (((!oldVal.equals(newOwner)) && codeGroup.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newOwner)) && codeGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             codeGroup.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -151,8 +158,7 @@ public class DynamicCodeCodeGroupSearchViewModel extends
      * @return the String.
      */
     public String getCodeGroupOwner() {
-        if ((((codeGroup == null) || (codeGroup.getOwner() == null)) || (codeGroup.getOwner()
-                .getValue() == null))) {
+        if ((((codeGroup == null) || (codeGroup.getOwner() == null)) || (codeGroup.getOwner().getValue() == null))) {
             return "";
         }
         return codeGroup.getOwner().getValue();

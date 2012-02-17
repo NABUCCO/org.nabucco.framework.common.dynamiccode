@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,9 +17,6 @@
 package org.nabucco.framework.common.dynamiccode.util;
 
 import org.nabucco.framework.base.facade.datatype.DatatypeState;
-import org.nabucco.framework.base.facade.datatype.Description;
-import org.nabucco.framework.base.facade.datatype.Name;
-import org.nabucco.framework.base.facade.datatype.Owner;
 import org.nabucco.framework.base.facade.exception.service.ServiceException;
 import org.nabucco.framework.base.facade.message.ServiceRequest;
 import org.nabucco.framework.base.facade.message.ServiceResponse;
@@ -45,19 +42,10 @@ public final class DynamicCodeTestUtility {
     }
 
     public static DynamicCodeCode dummyCode(String name) {
-        Name codeName = new Name();
-        codeName.setValue(name);
-
-        Description description = new Description();
-        description.setValue("This is a test code");
-
-        Owner owner = new Owner();
-        owner.setValue("PRODYNA");
-
         DynamicCodeCode code = new DynamicCodeCode();
-        code.setName(codeName);
-        code.setDescription(description);
-        code.setOwner(owner);
+        code.setName(name);
+        code.setDescription("This is a test code");
+        code.setOwner("PRODYNA");
         code.setDatatypeState(DatatypeState.INITIALIZED);
 
         return code;
@@ -76,8 +64,8 @@ public final class DynamicCodeTestUtility {
         return codeGroup;
     }
 
-    public static DynamicCodeCodeGroup createCodeGroup(DynamicCodeComponent component,
-            DynamicCodeCodeGroup codeGroup) throws ServiceException {
+    public static DynamicCodeCodeGroup createCodeGroup(DynamicCodeComponent component, DynamicCodeCodeGroup codeGroup)
+            throws ServiceException {
 
         codeGroup.setDatatypeState(DatatypeState.INITIALIZED);
 
@@ -94,8 +82,8 @@ public final class DynamicCodeTestUtility {
         return rs.getResponseMessage().getCodeGroup();
     }
 
-    public static DynamicCodeCodeGroup removeCodeGroup(DynamicCodeComponent component,
-            DynamicCodeCodeGroup codeGroup) throws ServiceException {
+    public static DynamicCodeCodeGroup removeCodeGroup(DynamicCodeComponent component, DynamicCodeCodeGroup codeGroup)
+            throws ServiceException {
 
         codeGroup.setDatatypeState(DatatypeState.DELETED);
 
@@ -125,14 +113,12 @@ public final class DynamicCodeTestUtility {
                 RuntimeTestSupport.createServiceContext());
         rq.setRequestMessage(msg);
 
-        ServiceResponse<DynamicCodeCodeMaintainMsg> rs = component.getMaintainDynamicCode()
-                .maintainDynamicCodeCode(rq);
+        ServiceResponse<DynamicCodeCodeMaintainMsg> rs = component.getMaintainDynamicCode().maintainDynamicCodeCode(rq);
 
         return rs.getResponseMessage().getCode();
     }
 
-    public static void removeCode(DynamicCodeComponent component, DynamicCodeCode code)
-            throws ServiceException {
+    public static void removeCode(DynamicCodeComponent component, DynamicCodeCode code) throws ServiceException {
 
         code.setDatatypeState(DatatypeState.DELETED);
 

@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,9 +30,8 @@ import org.nabucco.framework.plugin.base.model.BusinessModel;
  * 
  * @author Nicolas Moser, PRODYNA AG
  */
-public class DeleteDynamicCodeCodeGroupHandlerImpl extends
-        AbstractDeleteDatatypeHandler<DynamicCodeCodeGroupEditView> implements
-        DeleteDynamicCodeCodeGroupHandler {
+public class DeleteDynamicCodeCodeGroupHandlerImpl extends AbstractDeleteDatatypeHandler<DynamicCodeCodeGroupEditView>
+        implements DeleteDynamicCodeCodeGroupHandler {
 
     @Override
     public String getId() {
@@ -45,20 +44,15 @@ public class DeleteDynamicCodeCodeGroupHandlerImpl extends
     }
 
     @Override
-    protected boolean preClose(DynamicCodeCodeGroupEditView view) {
+    protected boolean preClose(DynamicCodeCodeGroupEditView view) throws ClientException {
         DynamicCodeCodeGroup codeGroup = view.getModel().getCodeGroup();
         codeGroup.setDatatypeState(DatatypeState.DELETED);
 
         BusinessModel businessModel = Activator.getDefault().getModel()
                 .getBusinessModel(DynamicCodeCodeGroupEditBusinessModel.ID);
 
-        try {
-            if (businessModel instanceof DynamicCodeCodeGroupEditBusinessModel) {
-                ((DynamicCodeCodeGroupEditBusinessModel) businessModel).save(codeGroup, null);
-            }
-        } catch (ClientException e) {
-            Activator.getDefault().logError(e);
-            return true;
+        if (businessModel instanceof DynamicCodeCodeGroupEditBusinessModel) {
+            ((DynamicCodeCodeGroupEditBusinessModel) businessModel).save(codeGroup, null);
         }
 
         return super.preClose(view);

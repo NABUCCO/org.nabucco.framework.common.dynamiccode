@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.nabucco.framework.base.facade.datatype.Datatype;
 import org.nabucco.framework.base.facade.datatype.code.Code;
+import org.nabucco.framework.base.facade.datatype.property.NabuccoProperty;
 import org.nabucco.framework.common.dynamiccode.ui.rcp.component.multipage.masterdetail.widgetcreators.code.WidgetCreatorForCode;
 import org.nabucco.framework.plugin.base.Activator;
 import org.nabucco.framework.plugin.base.component.multipage.masterdetail.detail.GeneralDetailPageViewLayouter;
@@ -39,6 +40,10 @@ import org.nabucco.framework.plugin.base.view.NabuccoMessageManager;
  */
 public class DynamicCodeEnabledGeneralDetailPageViewLayouter extends GeneralDetailPageViewLayouter {
 
+    private static final String PREFIX_SETTER = "set";
+
+    private static final String SEPARATOR = ".";
+
     /**
      * Creates a new {@link DynamicCodeEnabledGeneralDetailPageViewLayouter} instance.
      * 
@@ -47,39 +52,40 @@ public class DynamicCodeEnabledGeneralDetailPageViewLayouter extends GeneralDeta
      */
     public DynamicCodeEnabledGeneralDetailPageViewLayouter(String detailTitle) {
         super(detailTitle);
-
-//        super.addInitializer(Code.class, new InitializerForCode());
     }
 
     @Override
     protected Control layoutElement(Composite parent, BaseTypeWidgetFactory widgetFactory,
-            Datatype datatype, String masterBlockId, Object property, String propertyName,
-            GridData data, boolean readOnly, ViewModel externalViewModel,
-            NabuccoMessageManager messageManager) {
+            Datatype datatype, String masterBlockId, NabuccoProperty property, GridData data,
+            boolean readOnly, ViewModel externalViewModel, NabuccoMessageManager messageManager) {
 
-        Class<?> propertyClass = getJavaFieldClassViaGetterMethod(datatype.getClass(), propertyName);
+        Class<?> propertyClass = getJavaFieldClassViaGetterMethod(datatype.getClass(),
+                property.getName());
 
         if (propertyClass != Code.class) {
             // delegate to superclass
             return super.layoutElement(parent, widgetFactory, datatype, masterBlockId, property,
-                    propertyName, data, readOnly, externalViewModel, messageManager);
+                    data, readOnly, externalViewModel, messageManager);
         }
 
-        String firstChar = propertyName.substring(0, 1);
-        String lastPart = propertyName.substring(1);
+        String firstChar = property.getName().substring(0, 1);
+        String lastPart = property.getName().substring(1);
 
-        Label label = widgetFactory.createLabel(parent, masterBlockId + "." + propertyName);
+        Label label = widgetFactory.createLabel(parent,
+                masterBlockId + SEPARATOR + property.getName());
         label.setToolTipText(label.getText());
         label.setLayoutData(data);
 
         try {
-            Method method = datatype.getClass().getMethod(
-                    "set" + firstChar.toUpperCase() + lastPart, new Class[] { propertyClass });
+            Method setter = datatype.getClass().getMethod(
+                    PREFIX_SETTER + firstChar.toUpperCase() + lastPart,
+                    new Class[] { propertyClass });
 
             NabuccoFormToolkit nft = widgetFactory.getNabuccoFormToolKit();
             WidgetCreatorForCode widgetCreatorForCode = new WidgetCreatorForCode(nft);
             Control newWidget = widgetCreatorForCode.createViewInputElement(parent, property,
-                    method, datatype, readOnly, externalViewModel, messageManager, propertyName);
+                    setter, datatype, readOnly, externalViewModel, messageManager,
+                    property.getName());
 
             if (newWidget == null) {
                 Activator.getDefault().logError("Cannot create Code Widget [null].");

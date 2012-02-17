@@ -1,9 +1,24 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.ui.web.communication.maintain;
 
-import org.nabucco.framework.base.facade.datatype.security.Subject;
+import org.nabucco.framework.base.facade.datatype.NabuccoSystem;
+import org.nabucco.framework.base.facade.datatype.context.ServiceSubContext;
+import org.nabucco.framework.base.facade.datatype.session.NabuccoSession;
 import org.nabucco.framework.base.facade.exception.service.MaintainException;
 import org.nabucco.framework.base.facade.message.ServiceRequest;
 import org.nabucco.framework.base.facade.message.ServiceResponse;
@@ -35,90 +50,73 @@ public class MaintainDynamicCodeDelegate extends ServiceDelegateSupport {
     /**
      * MaintainDynamicCodeCodeGroup.
      *
-     * @param rq the DynamicCodeCodeGroupMaintainMsg.
+     * @param subContexts the ServiceSubContext....
+     * @param session the NabuccoSession.
+     * @param message the DynamicCodeCodeGroupMaintainMsg.
      * @return the DynamicCodeCodeGroupMaintainMsg.
      * @throws MaintainException
      */
-    public DynamicCodeCodeGroupMaintainMsg maintainDynamicCodeCodeGroup(
-            DynamicCodeCodeGroupMaintainMsg rq) throws MaintainException {
+    public DynamicCodeCodeGroupMaintainMsg maintainDynamicCodeCodeGroup(DynamicCodeCodeGroupMaintainMsg message,
+            NabuccoSession session, ServiceSubContext... subContexts) throws MaintainException {
         ServiceRequest<DynamicCodeCodeGroupMaintainMsg> request = new ServiceRequest<DynamicCodeCodeGroupMaintainMsg>(
-                super.createServiceContext());
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeGroupMaintainMsg> rs;
-        if ((service != null)) {
-            rs = service.maintainDynamicCodeCodeGroup(request);
-        } else {
-            throw new MaintainException(
-                    "Cannot execute service operation: MaintainDynamicCode.maintainDynamicCodeCodeGroup");
+                super.createServiceContext(session, subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeGroupMaintainMsg> response = null;
+        Exception exception = null;
+        if ((this.service != null)) {
+            super.handleRequest(request, session);
+            long start = NabuccoSystem.getCurrentTimeMillis();
+            try {
+                response = service.maintainDynamicCodeCodeGroup(request);
+            } catch (Exception e) {
+                exception = e;
+            } finally {
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(MaintainDynamicCode.class, "maintainDynamicCodeCodeGroup", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response, session);
+                return response.getResponseMessage();
+            }
         }
-        return rs.getResponseMessage();
-    }
-
-    /**
-     * MaintainDynamicCodeCodeGroup.
-     *
-     * @param subject the Subject.
-     * @param rq the DynamicCodeCodeGroupMaintainMsg.
-     * @return the DynamicCodeCodeGroupMaintainMsg.
-     * @throws MaintainException
-     */
-    public DynamicCodeCodeGroupMaintainMsg maintainDynamicCodeCodeGroup(
-            DynamicCodeCodeGroupMaintainMsg rq, Subject subject) throws MaintainException {
-        ServiceRequest<DynamicCodeCodeGroupMaintainMsg> request = new ServiceRequest<DynamicCodeCodeGroupMaintainMsg>(
-                super.createServiceContext(subject));
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeGroupMaintainMsg> rs;
-        if ((service != null)) {
-            rs = service.maintainDynamicCodeCodeGroup(request);
-        } else {
-            throw new MaintainException(
-                    "Cannot execute service operation: MaintainDynamicCode.maintainDynamicCodeCodeGroup");
-        }
-        return rs.getResponseMessage();
+        throw new MaintainException(
+                "Cannot execute service operation: MaintainDynamicCode.maintainDynamicCodeCodeGroup");
     }
 
     /**
      * MaintainDynamicCodeCode.
      *
-     * @param rq the DynamicCodeCodeMaintainMsg.
+     * @param subContexts the ServiceSubContext....
+     * @param session the NabuccoSession.
+     * @param message the DynamicCodeCodeMaintainMsg.
      * @return the DynamicCodeCodeMaintainMsg.
      * @throws MaintainException
      */
-    public DynamicCodeCodeMaintainMsg maintainDynamicCodeCode(DynamicCodeCodeMaintainMsg rq)
-            throws MaintainException {
+    public DynamicCodeCodeMaintainMsg maintainDynamicCodeCode(DynamicCodeCodeMaintainMsg message,
+            NabuccoSession session, ServiceSubContext... subContexts) throws MaintainException {
         ServiceRequest<DynamicCodeCodeMaintainMsg> request = new ServiceRequest<DynamicCodeCodeMaintainMsg>(
-                super.createServiceContext());
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeMaintainMsg> rs;
-        if ((service != null)) {
-            rs = service.maintainDynamicCodeCode(request);
-        } else {
-            throw new MaintainException(
-                    "Cannot execute service operation: MaintainDynamicCode.maintainDynamicCodeCode");
+                super.createServiceContext(session, subContexts));
+        request.setRequestMessage(message);
+        ServiceResponse<DynamicCodeCodeMaintainMsg> response = null;
+        Exception exception = null;
+        if ((this.service != null)) {
+            super.handleRequest(request, session);
+            long start = NabuccoSystem.getCurrentTimeMillis();
+            try {
+                response = service.maintainDynamicCodeCode(request);
+            } catch (Exception e) {
+                exception = e;
+            } finally {
+                long end = NabuccoSystem.getCurrentTimeMillis();
+                long duration = (end - start);
+                super.monitorResult(MaintainDynamicCode.class, "maintainDynamicCodeCode", duration, exception);
+            }
+            if ((response != null)) {
+                super.handleResponse(response, session);
+                return response.getResponseMessage();
+            }
         }
-        return rs.getResponseMessage();
-    }
-
-    /**
-     * MaintainDynamicCodeCode.
-     *
-     * @param subject the Subject.
-     * @param rq the DynamicCodeCodeMaintainMsg.
-     * @return the DynamicCodeCodeMaintainMsg.
-     * @throws MaintainException
-     */
-    public DynamicCodeCodeMaintainMsg maintainDynamicCodeCode(DynamicCodeCodeMaintainMsg rq,
-            Subject subject) throws MaintainException {
-        ServiceRequest<DynamicCodeCodeMaintainMsg> request = new ServiceRequest<DynamicCodeCodeMaintainMsg>(
-                super.createServiceContext(subject));
-        request.setRequestMessage(rq);
-        ServiceResponse<DynamicCodeCodeMaintainMsg> rs;
-        if ((service != null)) {
-            rs = service.maintainDynamicCodeCode(request);
-        } else {
-            throw new MaintainException(
-                    "Cannot execute service operation: MaintainDynamicCode.maintainDynamicCodeCode");
-        }
-        return rs.getResponseMessage();
+        throw new MaintainException("Cannot execute service operation: MaintainDynamicCode.maintainDynamicCodeCode");
     }
 }

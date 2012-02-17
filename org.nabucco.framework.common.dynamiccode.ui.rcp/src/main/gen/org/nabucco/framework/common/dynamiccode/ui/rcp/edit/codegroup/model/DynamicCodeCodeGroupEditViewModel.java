@@ -1,5 +1,18 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.ui.rcp.edit.codegroup.model;
 
@@ -9,6 +22,7 @@ import org.nabucco.framework.base.facade.datatype.DatatypeState;
 import org.nabucco.framework.base.facade.datatype.Description;
 import org.nabucco.framework.base.facade.datatype.Name;
 import org.nabucco.framework.base.facade.datatype.Owner;
+import org.nabucco.framework.base.facade.datatype.Tenant;
 import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCodeGroup;
 import org.nabucco.framework.plugin.base.component.edit.model.EditViewModel;
 import org.nabucco.framework.plugin.base.logging.Loggable;
@@ -29,6 +43,8 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
     public static final String PROPERTY_CODEGROUP_DESCRIPTION = "codeGroupDescription";
 
     public static final String PROPERTY_CODEGROUP_OWNER = "codeGroupOwner";
+
+    public static final String PROPERTY_CODEGROUP_TENANT = "codeGroupTenant";
 
     public static final String PROPERTY_PARENTGROUP_NAME = "parentGroupName";
 
@@ -53,6 +69,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
      */
     public Map<String, Serializable> getValues() {
         Map<String, Serializable> result = super.getValues();
+        result.put(PROPERTY_CODEGROUP_TENANT, this.getCodeGroupTenant());
         result.put(PROPERTY_CODEGROUP_NAME, this.getCodeGroupName());
         result.put(PROPERTY_CODEGROUP_OWNER, this.getCodeGroupOwner());
         result.put(PROPERTY_CODEGROUP_DESCRIPTION, this.getCodeGroupDescription());
@@ -68,14 +85,14 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
     public void setCodeGroup(DynamicCodeCodeGroup newValue) {
         DynamicCodeCodeGroup oldValue = this.codeGroup;
         this.codeGroup = newValue;
-        this.updateProperty(PROPERTY_CODEGROUP_DESCRIPTION,
-                ((oldValue != null) ? oldValue.getDescription() : ""),
+        this.updateProperty(PROPERTY_CODEGROUP_TENANT, ((oldValue != null) ? oldValue.getTenant() : ""),
+                ((newValue != null) ? newValue.getTenant() : ""));
+        this.updateProperty(PROPERTY_CODEGROUP_DESCRIPTION, ((oldValue != null) ? oldValue.getDescription() : ""),
                 ((newValue != null) ? newValue.getDescription() : ""));
-        this.updateProperty(PROPERTY_CODEGROUP_NAME,
-                ((oldValue != null) ? oldValue.getName() : ""),
+        this.updateProperty(PROPERTY_CODEGROUP_NAME, ((oldValue != null) ? oldValue.getName() : ""),
                 ((newValue != null) ? newValue.getName() : ""));
-        this.updateProperty(PROPERTY_CODEGROUP_OWNER, ((oldValue != null) ? oldValue.getOwner()
-                : ""), ((newValue != null) ? newValue.getOwner() : ""));
+        this.updateProperty(PROPERTY_CODEGROUP_OWNER, ((oldValue != null) ? oldValue.getOwner() : ""),
+                ((newValue != null) ? newValue.getOwner() : ""));
     }
 
     /**
@@ -95,8 +112,8 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
     public void setParentGroup(DynamicCodeCodeGroup newValue) {
         DynamicCodeCodeGroup oldValue = this.parentGroup;
         this.parentGroup = newValue;
-        this.updateProperty(PROPERTY_PARENTGROUP_NAME, ((oldValue != null) ? oldValue.getName()
-                : ""), ((newValue != null) ? newValue.getName() : ""));
+        this.updateProperty(PROPERTY_PARENTGROUP_NAME, ((oldValue != null) ? oldValue.getName() : ""),
+                ((newValue != null) ? newValue.getName() : ""));
     }
 
     /**
@@ -121,8 +138,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
         String oldVal = codeGroup.getName().getValue();
         codeGroup.getName().setValue(newName);
         this.updateProperty(PROPERTY_CODEGROUP_NAME, oldVal, newName);
-        if (((!oldVal.equals(newName)) && codeGroup.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newName)) && codeGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             codeGroup.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -133,8 +149,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
      * @return the String.
      */
     public String getCodeGroupName() {
-        if ((((codeGroup == null) || (codeGroup.getName() == null)) || (codeGroup.getName()
-                .getValue() == null))) {
+        if ((((codeGroup == null) || (codeGroup.getName() == null)) || (codeGroup.getName().getValue() == null))) {
             return "";
         }
         return codeGroup.getName().getValue();
@@ -153,8 +168,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
         String oldVal = codeGroup.getDescription().getValue();
         codeGroup.getDescription().setValue(newDescription);
         this.updateProperty(PROPERTY_CODEGROUP_DESCRIPTION, oldVal, newDescription);
-        if (((!oldVal.equals(newDescription)) && codeGroup.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newDescription)) && codeGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             codeGroup.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -165,8 +179,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
      * @return the String.
      */
     public String getCodeGroupDescription() {
-        if ((((codeGroup == null) || (codeGroup.getDescription() == null)) || (codeGroup
-                .getDescription().getValue() == null))) {
+        if ((((codeGroup == null) || (codeGroup.getDescription() == null)) || (codeGroup.getDescription().getValue() == null))) {
             return "";
         }
         return codeGroup.getDescription().getValue();
@@ -185,8 +198,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
         String oldVal = codeGroup.getOwner().getValue();
         codeGroup.getOwner().setValue(newOwner);
         this.updateProperty(PROPERTY_CODEGROUP_OWNER, oldVal, newOwner);
-        if (((!oldVal.equals(newOwner)) && codeGroup.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newOwner)) && codeGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             codeGroup.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -197,11 +209,40 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
      * @return the String.
      */
     public String getCodeGroupOwner() {
-        if ((((codeGroup == null) || (codeGroup.getOwner() == null)) || (codeGroup.getOwner()
-                .getValue() == null))) {
+        if ((((codeGroup == null) || (codeGroup.getOwner() == null)) || (codeGroup.getOwner().getValue() == null))) {
             return "";
         }
         return codeGroup.getOwner().getValue();
+    }
+
+    /**
+     * Setter for the CodeGroupTenant.
+     *
+     * @param newTenant the String.
+     */
+    public void setCodeGroupTenant(String newTenant) {
+        if (((codeGroup != null) && (codeGroup.getTenant() == null))) {
+            Tenant tenant = new Tenant();
+            codeGroup.setTenant(tenant);
+        }
+        String oldVal = codeGroup.getTenant().getValue();
+        codeGroup.getTenant().setValue(newTenant);
+        this.updateProperty(PROPERTY_CODEGROUP_TENANT, oldVal, newTenant);
+        if (((!oldVal.equals(newTenant)) && codeGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
+            codeGroup.setDatatypeState(DatatypeState.MODIFIED);
+        }
+    }
+
+    /**
+     * Getter for the CodeGroupTenant.
+     *
+     * @return the String.
+     */
+    public String getCodeGroupTenant() {
+        if ((((codeGroup == null) || (codeGroup.getTenant() == null)) || (codeGroup.getTenant().getValue() == null))) {
+            return "";
+        }
+        return codeGroup.getTenant().getValue();
     }
 
     /**
@@ -217,8 +258,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
         String oldVal = parentGroup.getName().getValue();
         parentGroup.getName().setValue(newName);
         this.updateProperty(PROPERTY_PARENTGROUP_NAME, oldVal, newName);
-        if (((!oldVal.equals(newName)) && parentGroup.getDatatypeState().equals(
-                DatatypeState.PERSISTENT))) {
+        if (((!oldVal.equals(newName)) && parentGroup.getDatatypeState().equals(DatatypeState.PERSISTENT))) {
             parentGroup.setDatatypeState(DatatypeState.MODIFIED);
         }
     }
@@ -229,8 +269,7 @@ public class DynamicCodeCodeGroupEditViewModel extends EditViewModel implements 
      * @return the String.
      */
     public String getParentGroupName() {
-        if ((((parentGroup == null) || (parentGroup.getName() == null)) || (parentGroup.getName()
-                .getValue() == null))) {
+        if ((((parentGroup == null) || (parentGroup.getName() == null)) || (parentGroup.getName().getValue() == null))) {
             return "";
         }
         return parentGroup.getName().getValue();

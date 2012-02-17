@@ -1,5 +1,18 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.ui.rcp.edit.code.view;
 
@@ -39,9 +52,17 @@ public class DynamicCodeCodeEditViewWidgetFactory extends WidgetFactory {
 
     public static final String OBSERVE_VALUE_DESCRIPTION = DynamicCodeCodeEditViewModel.PROPERTY_CODE_DESCRIPTION;
 
+    public static final String LABEL_TENANT = "code.tenant";
+
+    public static final String OBSERVE_VALUE_TENANT = DynamicCodeCodeEditViewModel.PROPERTY_CODE_TENANT;
+
     public static final String LABEL_OWNER = "code.owner";
 
     public static final String OBSERVE_VALUE_OWNER = DynamicCodeCodeEditViewModel.PROPERTY_CODE_OWNER;
+
+    public static final String LABEL_FUNCTIONALID = "code.functionalId";
+
+    public static final String OBSERVE_VALUE_FUNCTIONALID = DynamicCodeCodeEditViewModel.PROPERTY_CODE_FUNCTIONALID;
 
     public static final String LABEL_CODEGROUPPICKER = "dynamicCode.group";
 
@@ -126,8 +147,32 @@ public class DynamicCodeCodeEditViewWidgetFactory extends WidgetFactory {
         Text result = nabuccoFormToolKit.createTextInput(parent);
         DataBindingContext bindingContext = new DataBindingContext();
         IObservableValue uiElement = SWTObservables.observeText(result, SWT.Modify);
-        IObservableValue modelElement = BeansObservables.observeValue(model,
-                OBSERVE_VALUE_DESCRIPTION);
+        IObservableValue modelElement = BeansObservables.observeValue(model, OBSERVE_VALUE_DESCRIPTION);
+        bindingContext.bindValue(uiElement, modelElement, null, null);
+        return result;
+    }
+
+    /**
+     * CreateLabelTenant.
+     *
+     * @param parent the Composite.
+     * @return the Label.
+     */
+    public Label createLabelTenant(Composite parent) {
+        return nabuccoFormToolKit.createRealLabel(parent, LABEL_TENANT);
+    }
+
+    /**
+     * CreateInputFieldTenant.
+     *
+     * @param parent the Composite.
+     * @return the Text.
+     */
+    public Text createInputFieldTenant(Composite parent) {
+        Text result = nabuccoFormToolKit.createTextInput(parent);
+        DataBindingContext bindingContext = new DataBindingContext();
+        IObservableValue uiElement = SWTObservables.observeText(result, SWT.Modify);
+        IObservableValue modelElement = BeansObservables.observeValue(model, OBSERVE_VALUE_TENANT);
         bindingContext.bindValue(uiElement, modelElement, null, null);
         return result;
     }
@@ -158,6 +203,31 @@ public class DynamicCodeCodeEditViewWidgetFactory extends WidgetFactory {
     }
 
     /**
+     * CreateLabelFunctionalId.
+     *
+     * @param parent the Composite.
+     * @return the Label.
+     */
+    public Label createLabelFunctionalId(Composite parent) {
+        return nabuccoFormToolKit.createRealLabel(parent, LABEL_FUNCTIONALID);
+    }
+
+    /**
+     * CreateInputFieldFunctionalId.
+     *
+     * @param parent the Composite.
+     * @return the Text.
+     */
+    public Text createInputFieldFunctionalId(Composite parent) {
+        Text result = nabuccoFormToolKit.createTextInput(parent);
+        DataBindingContext bindingContext = new DataBindingContext();
+        IObservableValue uiElement = SWTObservables.observeText(result, SWT.Modify);
+        IObservableValue modelElement = BeansObservables.observeValue(model, OBSERVE_VALUE_FUNCTIONALID);
+        bindingContext.bindValue(uiElement, modelElement, null, null);
+        return result;
+    }
+
+    /**
      * CreateLabelCodeGroupPicker.
      *
      * @param parent the Composite.
@@ -175,9 +245,8 @@ public class DynamicCodeCodeEditViewWidgetFactory extends WidgetFactory {
      */
     public void createElementPickerCodeGroupPicker(Composite parent, ElementPickerParameter params) {
         ElementPickerComposite picker = new ElementPickerComposite(parent, SWT.NONE, params,
-                params.getInputFieldLabelProvider(), new LabelForDialog(TITLE_CODEGROUPPICKER,
-                        MESSAGE_CODEGROUPPICKER, SHELL_TITLE_CODEGROUPPICKER,
-                        MESSAGE_TABLE_CODEGROUPPICKER, MESSAGE_COMBO_CODEGROUPPICKER,
+                params.getInputFieldLabelProvider(), new LabelForDialog(TITLE_CODEGROUPPICKER, MESSAGE_CODEGROUPPICKER,
+                        SHELL_TITLE_CODEGROUPPICKER, MESSAGE_TABLE_CODEGROUPPICKER, MESSAGE_COMBO_CODEGROUPPICKER,
                         PATH_LABEL_CODEGROUPPICKER));
         DataBindingContext bindingContext = new DataBindingContext();
         IObservableValue uiElement;

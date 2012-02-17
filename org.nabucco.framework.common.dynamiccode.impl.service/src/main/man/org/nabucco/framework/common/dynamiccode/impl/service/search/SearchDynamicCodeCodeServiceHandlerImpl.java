@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 PRODYNA AG
+ * Copyright 2012 PRODYNA AG
  *
  * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/eclipse-1.0.php or
- * http://www.nabucco-source.org/nabucco-license.html
+ * http://www.nabucco.org/License.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,10 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Query;
-
 import org.nabucco.framework.base.facade.datatype.DatatypeState;
+import org.nabucco.framework.base.facade.exception.persistence.PersistenceException;
 import org.nabucco.framework.base.facade.exception.service.SearchException;
+import org.nabucco.framework.base.impl.service.maintain.NabuccoQuery;
 import org.nabucco.framework.base.impl.service.search.QuerySupport;
 import org.nabucco.framework.common.dynamiccode.facade.datatype.DynamicCodeCode;
 import org.nabucco.framework.common.dynamiccode.facade.message.DynamicCodeCodeListMsg;
@@ -43,8 +43,7 @@ public class SearchDynamicCodeCodeServiceHandlerImpl extends SearchDynamicCodeCo
     private Set<DynamicCodeCode> resultSet;
 
     @Override
-    public DynamicCodeCodeListMsg searchDynamicCodeCode(DynamicCodeCodeSearchMsg msg)
-            throws SearchException {
+    public DynamicCodeCodeListMsg searchDynamicCodeCode(DynamicCodeCodeSearchMsg msg) throws SearchException {
 
         this.request = msg;
         this.resultSet = new HashSet<DynamicCodeCode>();
@@ -73,14 +72,17 @@ public class SearchDynamicCodeCodeServiceHandlerImpl extends SearchDynamicCodeCo
         queryString.append(" and (c.owner = :owner or :owner is null)");
         queryString.append(" and (c.description like :description or :description is null)");
 
-        Query query = super.getEntityManager().createQuery(queryString.toString());
-        query.setParameter("name", this.request.getName());
-        query.setParameter("owner", this.request.getOwner());
-        query.setParameter("description",
-                QuerySupport.searchParameter(this.request.getDescription()));
+        try {
 
-        @SuppressWarnings("unchecked")
-        List<DynamicCodeCode> resultList = query.getResultList();
-        this.resultSet.addAll(resultList);
+            NabuccoQuery<DynamicCodeCode> query = super.getPersistenceManager().createQuery(queryString.toString());
+            query.setParameter("name", this.request.getName());
+            query.setParameter("owner", this.request.getOwner());
+            query.setParameter("description", QuerySupport.searchParameter(this.request.getDescription()));
+
+            List<DynamicCodeCode> resultList = query.getResultList();
+            this.resultSet.addAll(resultList);
+        } catch (PersistenceException pe) {
+            throw new SearchException("Error searching for DynamicCodeCode.", pe);
+        }
     }
 }

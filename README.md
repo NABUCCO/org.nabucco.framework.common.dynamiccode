@@ -37,25 +37,8 @@ Objectives
 
 Contact
 -------
-*Find more Information on our [website](http://nabuccosource.org/).*
+*Find more Information on our [website](http://nabucco.org/).*
 
-*The complete documentation may be found on our [Confluence](http://www.nabucco-source.org/confluence/). Sign up for free to add comments and help us to improve NABUCCO.*
+*The complete documentation may be found on our [Confluence](http://www.nabucco.org/confluence/). Sign up for free to add comments and help us to improve NABUCCO.*
 
-*Found any bugs? Want to track improvements? Report them in our public [Jira](http://www.nabucco-source.org/jira/).*
-
-
-org.nabucco.framework.common.dynamiccode
-==========================================
-In order to ensure complete multi-client capability for all NABUCCO components, it must be possible to maintain the information in the system dynamically. This maintenance applies the Dynamic Code component.
-
-In doing so, internal lists (such as CLIENT for example) as well as component specific lists are managed conveniently. This means that the customization for customer-specific requirements does not take place in the code and for that reason NABUCCO delivers a separate component inclusive of a User Interface.
-
-At the same time, the lists are maintained in a tree hierarchy and can be read by all the other components.
-
-The main functions are:
-
-* Dynamic definition of enumerations
-* Flexible alterations of literals in the duration (for example in drop-down boxes)
-* Client independent maintenance of literals
-* Grouping of literals
-* Fast selection of literals through configurable paths
+*Found any bugs? Want to track improvements? Report them in our public [Jira](http://www.nabucco.org/jira/).*

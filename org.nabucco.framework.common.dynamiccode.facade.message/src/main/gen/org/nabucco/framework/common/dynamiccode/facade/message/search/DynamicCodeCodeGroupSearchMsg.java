@@ -1,14 +1,33 @@
 /*
- * NABUCCO Generator, Copyright (c) 2010, PRODYNA AG, Germany. All rights reserved.
+ * Copyright 2012 PRODYNA AG
+ *
+ * Licensed under the Eclipse Public License (EPL), Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/eclipse-1.0.php or
+ * http://www.nabucco.org/License.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.nabucco.framework.common.dynamiccode.facade.message.search;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.nabucco.framework.base.facade.datatype.Description;
 import org.nabucco.framework.base.facade.datatype.Name;
 import org.nabucco.framework.base.facade.datatype.Owner;
-import org.nabucco.framework.base.facade.datatype.property.BasetypeProperty;
 import org.nabucco.framework.base.facade.datatype.property.NabuccoProperty;
+import org.nabucco.framework.base.facade.datatype.property.NabuccoPropertyContainer;
+import org.nabucco.framework.base.facade.datatype.property.NabuccoPropertyDescriptor;
+import org.nabucco.framework.base.facade.datatype.property.PropertyCache;
+import org.nabucco.framework.base.facade.datatype.property.PropertyDescriptorSupport;
 import org.nabucco.framework.base.facade.message.ServiceMessage;
 import org.nabucco.framework.base.facade.message.ServiceMessageSupport;
 
@@ -22,9 +41,13 @@ public class DynamicCodeCodeGroupSearchMsg extends ServiceMessageSupport impleme
 
     private static final long serialVersionUID = 1L;
 
-    private static final String[] PROPERTY_NAMES = { "owner", "name", "description" };
+    private static final String[] PROPERTY_CONSTRAINTS = { "l3,12;u0,n;m1,1;", "l0,255;u0,n;m1,1;", "l0,255;u0,n;m1,1;" };
 
-    private static final String[] PROPERTY_CONSTRAINTS = { "l0,n;m1,1;", "l0,n;m1,1;", "l0,n;m1,1;" };
+    public static final String OWNER = "owner";
+
+    public static final String NAME = "name";
+
+    public static final String DESCRIPTION = "description";
 
     /** The owner of the CodeGroup. For system codes 'NABUCCO' has to be used. */
     private Owner owner;
@@ -38,18 +61,60 @@ public class DynamicCodeCodeGroupSearchMsg extends ServiceMessageSupport impleme
     /** Constructs a new DynamicCodeCodeGroupSearchMsg instance. */
     public DynamicCodeCodeGroupSearchMsg() {
         super();
+        this.initDefaults();
+    }
+
+    /** InitDefaults. */
+    private void initDefaults() {
+    }
+
+    /**
+     * CreatePropertyContainer.
+     *
+     * @return the NabuccoPropertyContainer.
+     */
+    protected static NabuccoPropertyContainer createPropertyContainer() {
+        Map<String, NabuccoPropertyDescriptor> propertyMap = new HashMap<String, NabuccoPropertyDescriptor>();
+        propertyMap.put(OWNER,
+                PropertyDescriptorSupport.createBasetype(OWNER, Owner.class, 0, PROPERTY_CONSTRAINTS[0], false));
+        propertyMap.put(NAME,
+                PropertyDescriptorSupport.createBasetype(NAME, Name.class, 1, PROPERTY_CONSTRAINTS[1], false));
+        propertyMap.put(DESCRIPTION, PropertyDescriptorSupport.createBasetype(DESCRIPTION, Description.class, 2,
+                PROPERTY_CONSTRAINTS[2], false));
+        return new NabuccoPropertyContainer(propertyMap);
+    }
+
+    /** Init. */
+    public void init() {
+        this.initDefaults();
     }
 
     @Override
-    public List<NabuccoProperty<?>> getProperties() {
-        List<NabuccoProperty<?>> properties = super.getProperties();
-        properties.add(new BasetypeProperty<Owner>(PROPERTY_NAMES[0], Owner.class,
-                PROPERTY_CONSTRAINTS[0], this.owner));
-        properties.add(new BasetypeProperty<Name>(PROPERTY_NAMES[1], Name.class,
-                PROPERTY_CONSTRAINTS[1], this.name));
-        properties.add(new BasetypeProperty<Description>(PROPERTY_NAMES[2], Description.class,
-                PROPERTY_CONSTRAINTS[2], this.description));
+    public Set<NabuccoProperty> getProperties() {
+        Set<NabuccoProperty> properties = super.getProperties();
+        properties.add(super.createProperty(DynamicCodeCodeGroupSearchMsg.getPropertyDescriptor(OWNER), this.owner));
+        properties.add(super.createProperty(DynamicCodeCodeGroupSearchMsg.getPropertyDescriptor(NAME), this.name));
+        properties.add(super.createProperty(DynamicCodeCodeGroupSearchMsg.getPropertyDescriptor(DESCRIPTION),
+                this.description));
         return properties;
+    }
+
+    @Override
+    public boolean setProperty(NabuccoProperty property) {
+        if (super.setProperty(property)) {
+            return true;
+        }
+        if ((property.getName().equals(OWNER) && (property.getType() == Owner.class))) {
+            this.setOwner(((Owner) property.getInstance()));
+            return true;
+        } else if ((property.getName().equals(NAME) && (property.getType() == Name.class))) {
+            this.setName(((Name) property.getInstance()));
+            return true;
+        } else if ((property.getName().equals(DESCRIPTION) && (property.getType() == Description.class))) {
+            this.setDescription(((Description) property.getInstance()));
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -93,18 +158,6 @@ public class DynamicCodeCodeGroupSearchMsg extends ServiceMessageSupport impleme
         result = ((PRIME * result) + ((this.name == null) ? 0 : this.name.hashCode()));
         result = ((PRIME * result) + ((this.description == null) ? 0 : this.description.hashCode()));
         return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder appendable = new StringBuilder();
-        appendable.append("<DynamicCodeCodeGroupSearchMsg>\n");
-        appendable.append(super.toString());
-        appendable.append((("<owner>" + this.owner) + "</owner>\n"));
-        appendable.append((("<name>" + this.name) + "</name>\n"));
-        appendable.append((("<description>" + this.description) + "</description>\n"));
-        appendable.append("</DynamicCodeCodeGroupSearchMsg>\n");
-        return appendable.toString();
     }
 
     @Override
@@ -164,5 +217,24 @@ public class DynamicCodeCodeGroupSearchMsg extends ServiceMessageSupport impleme
      */
     public void setDescription(Description description) {
         this.description = description;
+    }
+
+    /**
+     * Getter for the PropertyDescriptor.
+     *
+     * @param propertyName the String.
+     * @return the NabuccoPropertyDescriptor.
+     */
+    public static NabuccoPropertyDescriptor getPropertyDescriptor(String propertyName) {
+        return PropertyCache.getInstance().retrieve(DynamicCodeCodeGroupSearchMsg.class).getProperty(propertyName);
+    }
+
+    /**
+     * Getter for the PropertyDescriptorList.
+     *
+     * @return the List<NabuccoPropertyDescriptor>.
+     */
+    public static List<NabuccoPropertyDescriptor> getPropertyDescriptorList() {
+        return PropertyCache.getInstance().retrieve(DynamicCodeCodeGroupSearchMsg.class).getAllProperties();
     }
 }
