@@ -37,7 +37,7 @@ public class OpenCodeGroupAction extends OpenEditorActionHandler<DynamicCodeCode
     private static final String EDITOR_ID = "DynamicCodeGroupEditor";
 
     @Override
-    protected String getEditorId(WebActionParameter parameter) throws ClientException {
+    protected String getEditorId(WebActionParameter parameter, DynamicCodeCodeGroup group) throws ClientException {
         return EDITOR_ID;
     }
 

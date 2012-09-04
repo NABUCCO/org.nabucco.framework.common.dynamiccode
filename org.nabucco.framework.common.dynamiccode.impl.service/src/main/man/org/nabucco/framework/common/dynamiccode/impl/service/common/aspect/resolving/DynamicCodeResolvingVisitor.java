@@ -75,7 +75,7 @@ public class DynamicCodeResolvingVisitor extends ServiceMessageVisitor {
      *            the service context
      */
     public DynamicCodeResolvingVisitor(long timeout, ServiceMessageContext context) {
-        this.cacheTimeout = timeout;
+        cacheTimeout = timeout;
         this.context = context;
     }
 
@@ -113,7 +113,7 @@ public class DynamicCodeResolvingVisitor extends ServiceMessageVisitor {
             DatatypeProperty codeProperty = (DatatypeProperty) property;
             Long refId = codeProperty.getReferenceId();
 
-            if (refId == null) {
+            if (refId == null || refId.equals(0L)) {
                 continue;
             }
 
@@ -181,7 +181,7 @@ public class DynamicCodeResolvingVisitor extends ServiceMessageVisitor {
         code = rs.getResponseMessage().getCode();
 
         if (code != null && code.getId() != null) {
-            getCache().store(tenant, code.getId().toString(), code, this.cacheTimeout);
+            getCache().store(tenant, code.getId().toString(), code, cacheTimeout);
         }
 
         return code;
@@ -196,15 +196,15 @@ public class DynamicCodeResolvingVisitor extends ServiceMessageVisitor {
      *             when the current user is not authorized to access the cache
      */
     private String getTenant() throws SecurityException {
-        if (this.context == null) {
+        if (context == null) {
             throw new IllegalStateException("Service Request Context [null] is not valid.");
         }
-        if (this.context.getSubject() == null || this.context.getSubject().getUser() == null) {
+        if (context.getSubject() == null || context.getSubject().getUser() == null) {
             throw new SecurityException("User 'null' is not authorized to access the cache.");
         }
 
-        UserId user = this.context.getSubject().getUserId();
-        Tenant tenant = this.context.getSubject().getTenant();
+        UserId user = context.getSubject().getUserId();
+        Tenant tenant = context.getSubject().getTenant();
 
         if (tenant == null || tenant.getValue() == null) {
             logger.error("User '" + user + "' is not authorized to access the code resolver cache.");
